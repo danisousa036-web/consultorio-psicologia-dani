@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sistema de Gestão de Prontuário Psicológico</title>
-<!-- Bibliotecas jspdf e html2canvas para geração de relatórios em PDF -->
+<!-- Bibliotecas jspdf e html2canvas -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <!-- Fonte Google Poppins -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
   --primary-pink: #d81b60;
@@ -229,7 +229,7 @@ body {
   background: white;
   border-radius: 12px;
   box-shadow: var(--shadow-sm);
-  overflow-x: auto;
+  overflow: hidden;
   border: 1px solid rgba(244, 143, 177, 0.2);
   margin-bottom: 25px;
 }
@@ -267,7 +267,7 @@ tr:hover { background-color: #fff8fa; }
 .badge-inactive { background-color: #ffebee; color: var(--danger-color); }
 .badge-paid { background-color: #e8f5e9; color: var(--success-color); }
 .badge-pending { background-color: #fff3e0; color: var(--warning-color); }
-.badge-falta { background-color: #fbe9e7; color: var(--danger-color); }
+.badge-falta { background-color: #fbe9e7; color: #d84315; }
 
 .view-section { display: none; }
 .view-section.active { display: block; }
@@ -447,6 +447,7 @@ tr:hover { background-color: #fff8fa; }
       </div>
     </div>
 
+    <!-- Histórico Geral -->
     <h3 style="color: var(--dark-pink); margin-bottom: 15px; font-size: 1.1rem;">Histórico de Sessões e Evoluções Clínicas</h3>
     <div class="filter-bar">
       <label style="font-size: 0.9rem; font-weight: 500;">Filtrar Mês:</label>
@@ -461,7 +462,7 @@ tr:hover { background-color: #fff8fa; }
             <th>Data / Hora</th>
             <th>Modalidade</th>
             <th>Status & Valor</th>
-            <th>Evolução Clínica / Registro</th>
+            <th>Evolução Clínica / Falta</th>
             <th>Comprovante</th>
             <th>Ações da Sessão</th>
           </tr>
@@ -470,42 +471,45 @@ tr:hover { background-color: #fff8fa; }
       </table>
     </div>
 
-    <!-- ÁREA DE HISTÓRICO DE FALTAS -->
-    <div style="margin-top: 40px; padding: 20px; background: white; border-radius: 12px; border: 1px solid var(--border-color);">
-      <h3 style="color: var(--dark-pink); margin-bottom: 15px; font-size: 1.1rem;">Histórico de Faltas do Paciente</h3>
-      <div class="filter-bar">
-        <select id="fault-history-month" style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 8px;">
-          <option value="">Todos os Meses</option>
-          <option value="01">Janeiro</option>
-          <option value="02">Fevereiro</option>
-          <option value="03">Março</option>
-          <option value="04">Abril</option>
-          <option value="05">Maio</option>
-          <option value="06">Junho</option>
-          <option value="07">Julho</option>
-          <option value="08">Agosto</option>
-          <option value="09">Setembro</option>
-          <option value="10">Outubro</option>
-          <option value="11">Novembro</option>
-          <option value="12">Dezembro</option>
-        </select>
-        <select id="fault-history-year" style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 8px;"></select>
-        <button class="btn-primary" onclick="renderPatientFaultsHistory()">Filtrar Faltas</button>
-      </div>
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Data</th>
-              <th>Horário</th>
-              <th>Modalidade</th>
-              <th>Motivo</th>
-              <th>Ação</th>
-            </tr>
-          </thead>
-          <tbody id="faults-history-tbody"></tbody>
-        </table>
-      </div>
+    <!-- Histórico de Faltas no Prontuário -->
+    <h3 style="color: var(--dark-pink); margin-top: 35px; margin-bottom: 15px; font-size: 1.1rem;">Histórico de Faltas</h3>
+    <div class="filter-bar">
+      <select id="faults-month-filter" style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 8px;">
+        <option value="">Todos os Meses</option>
+        <option value="01">Janeiro</option>
+        <option value="02">Fevereiro</option>
+        <option value="03">Março</option>
+        <option value="04">Abril</option>
+        <option value="05">Maio</option>
+        <option value="06">Junho</option>
+        <option value="07">Julho</option>
+        <option value="08">Agosto</option>
+        <option value="09">Setembro</option>
+        <option value="10">Outubro</option>
+        <option value="11">Novembro</option>
+        <option value="12">Dezembro</option>
+      </select>
+      <select id="faults-year-filter" style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 8px;">
+        <option value="">Todos os Anos</option>
+        <option value="2025">2025</option>
+        <option value="2026">2026</option>
+        <option value="2027">2027</option>
+      </select>
+      <button class="btn-primary" onclick="renderPatientFaultsHistory()">Filtrar Faltas</button>
+    </div>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Horário</th>
+            <th>Modalidade</th>
+            <th>Motivo</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="patient-faults-table-body"></tbody>
+      </table>
     </div>
   </div>
 
@@ -553,60 +557,58 @@ tr:hover { background-color: #fff8fa; }
 
   <!-- RELATÓRIO DE FALTAS -->
   <div id="view-faltas" class="view-section">
-    <div class="card" style="margin-bottom: 25px;">
-      <h2 style="color: var(--dark-pink); margin-bottom: 15px; font-size: 1.3rem;">📋 Relatório Consolidado de Faltas</h2>
-      <div class="filter-bar">
-        <div class="form-group" style="margin-bottom:0;">
-          <label>Filtrar Por:</label>
-          <select id="fault-report-type" onchange="toggleFaultReportFilters()" style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 8px;">
-            <option value="semana">Semana</option>
-            <option value="mes">Mês</option>
-            <option value="ano">Ano</option>
-          </select>
-        </div>
-
-        <div id="filter-container-semana" class="fault-filter-group" style="display: flex; gap: 8px; align-items: center;">
-          <label>Data de Início (Segunda):</label>
-          <input type="date" id="fault-start-date" style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 8px;">
-        </div>
-
-        <div id="filter-container-mes" class="fault-filter-group" style="display: none; gap: 8px; align-items: center;">
-          <label>Mês:</label>
-          <input type="month" id="fault-month-input" style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 8px;">
-        </div>
-
-        <div id="filter-container-ano" class="fault-filter-group" style="display: none; gap: 8px; align-items: center;">
-          <label>Ano:</label>
-          <select id="fault-year-input" style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 8px;"></select>
-        </div>
-
-        <div class="form-group" style="margin-bottom:0;">
-          <label>Paciente (Opcional):</label>
-          <select id="fault-patient-filter" style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 8px;">
-            <option value="">Todos os Pacientes</option>
-          </select>
-        </div>
-
-        <button class="btn-primary" onclick="renderFaultsReport()" style="margin-top: 20px;">Filtrar Faltas</button>
-        <button class="btn-pdf" onclick="generateFaultsReportPDF()" style="margin-top: 20px;">📄 Gerar PDF do Relatório</button>
+    <h3 style="color: var(--dark-pink); margin-bottom: 15px; font-size: 1.2rem;">📋 Relatório de Faltas</h3>
+    <div class="filter-bar">
+      <div class="form-group" style="margin-bottom:0;">
+        <label style="font-size:0.85rem;">Tipo de Período:</label>
+        <select id="fault-report-period-type" onchange="toggleFaultPeriodInputs()" style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 8px;">
+          <option value="semana">Semana</option>
+          <option value="mes">Mês</option>
+          <option value="ano">Ano</option>
+        </select>
       </div>
+
+      <div id="group-fault-week" class="form-group" style="margin-bottom:0;">
+        <label style="font-size:0.85rem;">Selecione a Semana:</label>
+        <input type="week" id="fault-report-week" style="padding: 7px 12px; border: 1px solid var(--border-color); border-radius: 8px;">
+      </div>
+
+      <div id="group-fault-month" class="form-group" style="display:none; margin-bottom:0;">
+        <label style="font-size:0.85rem;">Selecione o Mês:</label>
+        <input type="month" id="fault-report-month" style="padding: 7px 12px; border: 1px solid var(--border-color); border-radius: 8px;">
+      </div>
+
+      <div id="group-fault-year" class="form-group" style="display:none; margin-bottom:0;">
+        <label style="font-size:0.85rem;">Selecione o Ano:</label>
+        <input type="number" id="fault-report-year" value="2026" style="padding: 7px 12px; border: 1px solid var(--border-color); border-radius: 8px; width: 100px;">
+      </div>
+
+      <div class="form-group" style="margin-bottom:0;">
+        <label style="font-size:0.85rem;">Paciente (Opcional):</label>
+        <select id="fault-report-patient" style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 8px;">
+          <option value="">Todos os Pacientes</option>
+        </select>
+      </div>
+
+      <button class="btn-primary" onclick="renderFaultsReport()" style="margin-top: 20px;">Gerar Relatório</button>
+      <button class="btn-pdf" onclick="downloadFaultsReportPDF()" style="margin-top: 20px;">📄 Gerar PDF do Relatório</button>
     </div>
 
     <div class="table-container">
       <table>
         <thead>
           <tr>
-            <th>Data / Hora</th>
+            <th>Data</th>
+            <th>Horário</th>
             <th>Paciente</th>
             <th>Modalidade</th>
             <th>Motivo da Falta</th>
           </tr>
         </thead>
-        <tbody id="faults-report-tbody"></tbody>
+        <tbody id="faults-report-table-body"></tbody>
       </table>
     </div>
   </div>
-
 </div>
 
 <!-- MODAL PACIENTE -->
@@ -679,28 +681,31 @@ tr:hover { background-color: #fff8fa; }
       <div class="form-row">
         <div class="form-group">
           <label>Status da Sessão *</label>
-          <select id="session-status" required onchange="toggleSessionFieldsByStatus()">
+          <select id="session-status" required onchange="toggleSessionStatusFields()">
             <option value="realizada">Realizada</option>
             <option value="cancelada">Cancelada</option>
             <option value="falta">Falta</option>
           </select>
         </div>
-        <div class="form-group" id="field-group-value">
+        <div class="form-group" id="group-session-value">
           <label>Valor (R$) *</label>
-          <input type="number" step="0.01" id="session-value" required>
+          <input type="number" step="0.01" id="session-value">
         </div>
       </div>
-      <div class="form-group" id="field-group-payment">
+
+      <div class="form-group" id="group-session-payment">
         <label>Situação do Pagamento *</label>
-        <select id="session-payment-status" required>
+        <select id="session-payment-status">
           <option value="pago">Pago</option>
           <option value="pendente">Pendente</option>
         </select>
       </div>
-      <div class="form-group" id="field-group-fault-reason" style="display:none;">
+
+      <div class="form-group" id="group-session-fault-reason" style="display:none;">
         <label>Motivo da falta *</label>
-        <textarea id="session-fault-reason" rows="3" placeholder="Digite o motivo da falta..."></textarea>
+        <textarea id="session-fault-reason" rows="3" placeholder="Informe o motivo do não comparecimento..."></textarea>
       </div>
+
       <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
         <button type="button" class="btn-back" onclick="closeModal('modal-session')">Cancelar</button>
         <button type="submit" class="btn-primary">Salvar Sessão</button>
@@ -772,7 +777,7 @@ tr:hover { background-color: #fff8fa; }
       <p style="color: var(--text-muted);">Escolha um mês para visualizar o consolidado do paciente.</p>
     </div>
     <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
-      <button class="btn-back" onclick="closeModal('modal-monthly-summary')">Fechar</button>
+      <button type="button" class="btn-back" onclick="closeModal('modal-monthly-summary')">Fechar</button>
     </div>
   </div>
 </div>
@@ -785,25 +790,25 @@ let currentPatientId = null;
 function navigateTo(viewId, isBack = false, state = {}) {
   const currentView = document.querySelector('.view-section.active');
   const currentViewId = currentView ? currentView.id.replace('view-', '') : 'dashboard';
-  
+
   if (!isBack && currentViewId !== viewId) {
     navigationHistory.push({ view: currentViewId, patientId: currentPatientId });
   }
-  
+
   if (state.patientId !== undefined) currentPatientId = state.patientId;
-  
+
   document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.nav-links button').forEach(el => el.classList.remove('active'));
-  
+
   const targetView = document.getElementById(`view-${viewId}`);
   if (targetView) targetView.classList.add('active');
-  
+
   const navBtn = document.getElementById(`nav-${viewId}`);
   if (navBtn) navBtn.classList.add('active');
-  
+
   const backBtn = document.getElementById('btn-global-back');
   backBtn.style.display = navigationHistory.length > 0 ? 'inline-flex' : 'none';
-  
+
   const titleMap = {
     'dashboard': 'Dashboard',
     'pacientes': 'Gestão de Pacientes',
@@ -811,9 +816,9 @@ function navigateTo(viewId, isBack = false, state = {}) {
     'financeiro': 'Financeiro Mensal',
     'faltas': 'Relatório de Faltas'
   };
-  
+
   document.getElementById('page-title').innerText = titleMap[viewId] || '';
-  
+
   if (viewId === 'dashboard') loadDashboardData();
   if (viewId === 'pacientes') renderPatientsList();
   if (viewId === 'prontuario' && currentPatientId) loadProntuarioData(currentPatientId);
@@ -843,18 +848,17 @@ request.onupgradeneeded = function(e) {
   if (!db.objectStoreNames.contains('sessoes')) {
     const sessoesStore = db.createObjectStore('sessoes', { keyPath: 'id', autoIncrement: true });
     sessoesStore.createIndex('patientId', 'patientId', { unique: false });
-    sessoesStore.createIndex('pacienteId', 'pacienteId', { unique: false });
+    sessoesStore.createIndex('pacienteld', 'pacienteld', { unique: false });
   }
   if (!db.objectStoreNames.contains('evolucoes')) {
     const evolucoesStore = db.createObjectStore('evolucoes', { keyPath: 'id', autoIncrement: true });
-    evolucoesStore.createIndex('sessaoId', 'sessaoId', { unique: true });
-    evolucoesStore.createIndex('pacienteId', 'pacienteId', { unique: false });
+    evolucoesStore.createIndex('sessaold', 'sessaold', { unique: true });
+    evolucoesStore.createIndex('pacienteld', 'pacienteld', { unique: false });
   }
 };
 
 request.onsuccess = function(e) {
   db = e.target.result;
-  populateYearSelects();
   loadDashboardData();
 };
 
@@ -894,45 +898,35 @@ function deleteItem(storeName, id) {
   });
 }
 
-function populateYearSelects() {
-  const currentYear = new Date().getFullYear();
-  const yearSelects = [document.getElementById('fault-history-year'), document.getElementById('fault-year-input')];
-  yearSelects.forEach(select => {
-    if (!select) return;
-    select.innerHTML = '<option value="">Todos os Anos</option>';
-    for (let y = currentYear - 2; y <= currentYear + 2; y++) {
-      select.innerHTML += `<option value="${y}">${y}</option>`;
-    }
-  });
-}
-
 /* DASHBOARD LOGIC */
 async function loadDashboardData() {
   if (!db) return;
   const patients = await getAll('pacientes');
   const sessions = await getAll('sessoes');
-  
+
   document.getElementById('dash-active-patients').innerText = patients.filter(p => p.status === 'ativo').length;
-  
+
   const now = new Date();
   const currentMonthStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
-  
   const monthSessions = sessions.filter(s => (s.dataHora || s.datetime || '').startsWith(currentMonthStr));
+
   document.getElementById('dash-month-sessions').innerText = monthSessions.length;
-  
+
   let totalReceived = 0;
   let totalPending = 0;
-  
+
   monthSessions.forEach(s => {
-    if (s.status === 'falta') return; // Falta não contabiliza pagamento
+    if (s.status === 'falta') return;
     const val = parseFloat(s.valor || s.value) || 0;
     const isPaid = (s.pagamentoStatus || s.paymentStatus) === 'pago';
     if (isPaid) totalReceived += val;
     else totalPending += val;
   });
-  
-  document.getElementById('dash-month-revenue').innerText = totalReceived.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-  document.getElementById('dash-month-pending').innerText = totalPending.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+  document.getElementById('dash-month-revenue').innerText =
+    totalReceived.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  document.getElementById('dash-month-pending').innerText =
+    totalPending.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
 
 /* PACIENTES LOGIC */
@@ -954,6 +948,7 @@ function openPatientModal(patientId = null) {
   document.getElementById('patient-id').value = '';
   document.getElementById('modal-patient-title').innerText = 'Cadastrar Paciente';
   toggleInfantFields();
+
   if (patientId) {
     getById('pacientes', patientId).then(p => {
       document.getElementById('patient-id').value = p.id;
@@ -978,31 +973,32 @@ async function handlePatientSubmit(e) {
   e.preventDefault();
   const id = document.getElementById('patient-id').value;
   const type = document.getElementById('patient-type').value;
-  
+
   const patientData = {
     nome: document.getElementById('patient-name').value,
     tipo: type,
     telefone: document.getElementById('patient-phone').value,
     status: 'ativo'
   };
-  
+
   if (id) {
     const existing = await getById('pacientes', id);
     patientData.id = Number(id);
     patientData.status = existing ? existing.status : 'ativo';
   }
-  
+
   if (type === 'Infantil') {
     patientData.responsavel = document.getElementById('patient-guardian').value;
     patientData.parentesco = document.getElementById('patient-kinship').value;
     patientData.telefoneResponsavel = document.getElementById('patient-guardian-phone').value;
   }
-  
-  const savedId = await saveItem('pacientes', patientData);
+
+  await saveItem('pacientes', patientData);
   closeModal('modal-patient');
-  
+
   if (document.getElementById('view-pacientes').classList.contains('active')) renderPatientsList();
-  if (document.getElementById('view-prontuario').classList.contains('active')) loadProntuarioData(id || savedId);
+  if (document.getElementById('view-prontuario').classList.contains('active')) loadProntuarioData(patientData.id);
+
   loadDashboardData();
 }
 
@@ -1020,22 +1016,22 @@ async function renderPatientsList() {
   const patients = await getAll('pacientes');
   const filter = document.getElementById('patient-status-filter').value;
   const searchQuery = document.getElementById('patient-search-input').value.toLowerCase();
-  
   const tbody = document.getElementById('patients-table-body');
   tbody.innerHTML = '';
-  
+
   const filtered = patients.filter(p => {
     const matchesStatus = filter === 'todos' ? true : p.status === filter;
     const pName = (p.nome || p.name || '').toLowerCase();
     const matchesSearch = pName.includes(searchQuery);
     return matchesStatus && matchesSearch;
   });
-  
+
   filtered.forEach(p => {
     const tr = document.createElement('tr');
     const pName = p.nome || p.name || '';
     const pType = p.tipo || p.type || '';
     const pPhone = p.telefone || p.phone || '';
+
     tr.innerHTML = `
       <td><strong>${pName}</strong></td>
       <td>${pType}</td>
@@ -1044,7 +1040,7 @@ async function renderPatientsList() {
       <td>
         <button class="btn-primary" onclick="openProntuario(${p.id})">Prontuário</button>
         <button class="btn-secondary" onclick="openPatientModal(${p.id})">Editar</button>
-        ${p.status === 'ativo' 
+        ${p.status === 'ativo'
           ? `<button class="btn-danger" onclick="togglePatientStatus(${p.id}, 'inativo')">Inativar</button>`
           : `<button class="btn-secondary" onclick="togglePatientStatus(${p.id}, 'ativo')">Reativar</button>`
         }
@@ -1061,11 +1057,11 @@ function openProntuario(patientId) {
 async function loadProntuarioData(patientId, monthFilter = null) {
   const patient = await getById('pacientes', patientId);
   if (!patient) return;
-  
+
   const pName = patient.nome || patient.name || '';
   const pType = patient.tipo || patient.type || '';
   const pPhone = patient.telefone || patient.phone || '';
-  
+
   document.getElementById('pront-patient-name').innerText = `${pName} (${pType})`;
   let details = `Tel: ${pPhone}`;
   if (pType === 'Infantil') {
@@ -1075,55 +1071,41 @@ async function loadProntuarioData(patientId, monthFilter = null) {
     details += ` | Resp: ${pResp} (${pKin}) - Tel Resp: ${pRespTel}`;
   }
   document.getElementById('pront-patient-details').innerText = details;
-  
+
   const allSessions = await getAll('sessoes');
   const allEvolutions = await getAll('evolucoes');
-  
-  let patientSessions = allSessions.filter(s => Number(s.pacienteId || s.patientId) === Number(patientId));
-  
+
+  let patientSessions = allSessions.filter(s => Number(s.pacienteld || s.patientId) === Number(patientId));
+
   if (monthFilter) {
     patientSessions = patientSessions.filter(s => (s.dataHora || s.datetime || '').startsWith(monthFilter));
   }
-  
+
   patientSessions.sort((a, b) => new Date(b.dataHora || b.datetime) - new Date(a.dataHora || a.datetime));
-  
+
   const tbody = document.getElementById('prontuario-table-body');
   tbody.innerHTML = '';
-  
+
   patientSessions.forEach(s => {
-    const evo = allEvolutions.find(e => Number(e.sessaoId) === Number(s.id));
+    const evo = allEvolutions.find(e => Number(e.sessaold) === Number(s.id));
     const dtStr = s.dataHora || s.datetime;
     const dt = new Date(dtStr).toLocaleString('pt-BR');
     const isFalta = s.status === 'falta';
-    
-    const valNum = isFalta ? 0 : parseFloat(s.valor || s.value || 0);
+    const valNum = parseFloat(s.valor || s.value || 0);
     const val = isFalta ? '-' : valNum.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     const payStatus = isFalta ? 'N/A' : (s.pagamentoStatus || s.paymentStatus || 'pendente');
     const mode = s.modalidade || s.mode || '';
-    
-    let evoColHtml = '';
-    if (isFalta) {
-      evoColHtml = `
-        <span class="badge badge-falta">FALTA REGISTRADA</span><br>
-        <small><strong>Motivo:</strong> ${s.motivoFalta || 'Não informado'}</small><br>
-        <button class="btn-pdf" style="margin-top:5px;" onclick="generateFaultPDF(${s.id})">📄 Gerar registro de falta em PDF</button>
-      `;
-    } else {
-      evoColHtml = evo
-        ? `<div class="action-btns">
-             <button class="btn-secondary" onclick="openEvolutionModal(${s.id}, ${evo.id})">Editar Evolução</button>
-             <button class="btn-pdf" onclick="generateSessionPDF(${s.id})">PDF Sessão</button>
-           </div>`
-        : `<div class="action-btns">
-             <button class="btn-primary" onclick="openEvolutionModal(${s.id})">+ Evolução</button>
-           </div>`;
-    }
 
-    let receiptColHtml = isFalta 
-      ? '<span style="color:var(--text-muted); font-size:0.85rem;">N/A</span>'
-      : ((s.recibo || s.receipt)
-          ? `<button class="btn-secondary" onclick="openReceiptModal(${s.id})">Ver Comprovante</button>`
-          : `<button class="btn-secondary" style="border-style:dashed;" onclick="openReceiptModal(${s.id})">+ Anexar</button>`);
+    let evoCol = '';
+    if (isFalta) {
+      evoCol = `<strong>FALTA REGISTRADA</strong><br><span style="font-size:0.85rem; color:var(--text-muted);">Motivo: ${s.motivoFalta || 'Não informado'}</span><br>
+        <button class="btn-pdf" style="margin-top:4px;" onclick="generateFaultPDF(${s.id})">📄 Gerar registro de falta em PDF</button>`;
+    } else {
+      evoCol = evo
+        ? `<button class="btn-secondary" onclick="openEvolutionModal(${s.id}, ${evo.id})">Editar Evolução</button>
+           <button class="btn-pdf" onclick="generateSessionPDF(${s.id})">PDF Sessão</button>`
+        : `<button class="btn-primary" onclick="openEvolutionModal(${s.id})">+ Evolução</button>`;
+    }
 
     const tr = document.createElement('tr');
     tr.innerHTML = `
@@ -1133,8 +1115,12 @@ async function loadProntuarioData(patientId, monthFilter = null) {
         <strong>${val}</strong><br>
         <span class="badge ${isFalta ? 'badge-falta' : (payStatus === 'pago' ? 'badge-paid' : 'badge-pending')}">${isFalta ? 'FALTA' : payStatus.toUpperCase()}</span>
       </td>
-      <td>${evoColHtml}</td>
-      <td>${receiptColHtml}</td>
+      <td><div class="action-btns">${evoCol}</div></td>
+      <td>
+        ${isFalta ? '-' : ((s.recibo || s.receipt)
+          ? `<button class="btn-secondary" onclick="openReceiptModal(${s.id})">Ver Comprovante</button>`
+          : `<button class="btn-secondary" style="border-style:dashed;" onclick="openReceiptModal(${s.id})">+ Anexar</button>`)}
+      </td>
       <td>
         <div class="action-btns">
           <button class="btn-secondary" onclick="openSessionModal(${s.id})">Editar Sessão</button>
@@ -1160,52 +1146,51 @@ function resetPatientHistory() {
 /* HISTÓRICO DE FALTAS NO PRONTUÁRIO */
 async function renderPatientFaultsHistory() {
   if (!currentPatientId) return;
-  const monthFilter = document.getElementById('fault-history-month').value;
-  const yearFilter = document.getElementById('fault-history-year').value;
-  
+  const monthFilter = document.getElementById('faults-month-filter').value;
+  const yearFilter = document.getElementById('faults-year-filter').value;
+
   const allSessions = await getAll('sessoes');
-  let faults = allSessions.filter(s => Number(s.pacienteId || s.patientId) === Number(currentPatientId) && s.status === 'falta');
-  
-  if (monthFilter) {
-    faults = faults.filter(s => {
-      const dt = new Date(s.dataHora || s.datetime);
-      return String(dt.getMonth() + 1).padStart(2, '0') === monthFilter;
-    });
-  }
-  
-  if (yearFilter) {
-    faults = faults.filter(s => {
-      const dt = new Date(s.dataHora || s.datetime);
-      return String(dt.getFullYear()) === yearFilter;
-    });
-  }
-  
+  let faults = allSessions.filter(s => Number(s.pacienteld || s.patientId) === Number(currentPatientId) && s.status === 'falta');
+
+  faults = faults.filter(s => {
+    const dtStr = s.dataHora || s.datetime || '';
+    if (!dtStr) return false;
+    const dateObj = new Date(dtStr);
+    const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const y = String(dateObj.getFullYear());
+
+    const matchesMonth = monthFilter ? m === monthFilter : true;
+    const matchesYear = yearFilter ? y === yearFilter : true;
+    return matchesMonth && matchesYear;
+  });
+
   faults.sort((a, b) => new Date(b.dataHora || b.datetime) - new Date(a.dataHora || a.datetime));
-  
-  const tbody = document.getElementById('faults-history-tbody');
+
+  const tbody = document.getElementById('patient-faults-table-body');
   tbody.innerHTML = '';
-  
+
   if (faults.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">Nenhuma falta registrada para os filtros selecionados.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color: var(--text-muted);">Nenhuma falta registrada para o filtro selecionado.</td></tr>';
     return;
   }
-  
+
   faults.forEach(f => {
-    const dtObj = new Date(f.dataHora || f.datetime);
-    const dateStr = dtObj.toLocaleDateString('pt-BR');
-    const timeStr = dtObj.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-    
+    const dt = new Date(f.dataHora || f.datetime);
+    const dateStr = dt.toLocaleDateString('pt-BR');
+    const timeStr = dt.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    const mode = f.modalidade || f.mode || '-';
+    const reason = f.motivoFalta || 'Não informado';
+
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${dateStr}</td>
       <td>${timeStr}</td>
-      <td>${f.modalidade || f.mode || '-'}</td>
-      <td>${f.motivoFalta || 'Não informado'}</td>
+      <td>${mode}</td>
+      <td>${reason}</td>
       <td>
         <button class="btn-secondary" onclick="openSessionModal(${f.id})">Ver registro</button>
         <button class="btn-pdf" onclick="generateFaultPDF(${f.id})">Gerar PDF</button>
-      </td>
-    `;
+      </td>`;
     tbody.appendChild(tr);
   });
 }
@@ -1214,7 +1199,7 @@ async function renderPatientFaultsHistory() {
 async function deleteSession(sessionId) {
   if (confirm("Tem certeza que deseja excluir esta sessão e todo seu registro de evolução?")) {
     const evolutions = await getAll('evolucoes');
-    const evo = evolutions.find(e => Number(e.sessaoId) === Number(sessionId));
+    const evo = evolutions.find(e => Number(e.sessaold) === Number(sessionId));
     if (evo) await deleteItem('evolucoes', evo.id);
     await deleteItem('sessoes', sessionId);
     loadProntuarioData(currentPatientId);
@@ -1222,116 +1207,14 @@ async function deleteSession(sessionId) {
   }
 }
 
-/* GERAÇÃO DE PDF - REGISTRO DE FALTA INDIVIDUAL */
-async function generateFaultPDF(sessionId) {
-  const session = await getById('sessoes', sessionId);
-  if (!session) return;
-  const patient = await getById('pacientes', session.pacienteId || session.patientId);
-  
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF('p', 'mm', 'a4');
-  
-  const pName = patient ? (patient.nome || patient.name || '') : '';
-  const dtObj = new Date(session.dataHora || session.datetime);
-  const dateStr = dtObj.toLocaleDateString('pt-BR');
-  const timeStr = dtObj.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-  const mode = session.modalidade || session.mode || '';
-  const reason = session.motivoFalta || 'Não informado';
-  
-  const margin = 20;
-  const contentWidth = 170;
-  let currentY = 25;
-  
-  // Cabeçalho
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(14);
-  doc.setTextColor(136, 14, 79);
-  doc.text("REGISTRO DE FALTA", 105, currentY, { align: "center" });
-  currentY += 10;
-  
-  // Dados da Psicóloga
-  doc.setFillColor(255, 245, 248);
-  doc.setDrawColor(244, 143, 177);
-  doc.roundedRect(margin, currentY, contentWidth, 24, 2, 2, 'FD');
-  
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(10);
-  doc.setTextColor(136, 14, 79);
-  doc.text("DADOS DA PSICÓLOGA", margin + 5, currentY + 6);
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(9.5);
-  doc.setTextColor(55, 71, 79);
-  doc.text("Daniele Sousa Santos", margin + 5, currentY + 12);
-  doc.text("Psicóloga", margin + 5, currentY + 17);
-  doc.text("CRP 22/07398", margin + 5, currentY + 22);
-  
-  currentY += 30;
-  
-  // Dados do Paciente
-  doc.roundedRect(margin, currentY, contentWidth, 30, 2, 2, 'FD');
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(10);
-  doc.setTextColor(136, 14, 79);
-  doc.text("DADOS DO PACIENTE", margin + 5, currentY + 6);
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(9.5);
-  doc.setTextColor(55, 71, 79);
-  doc.text(`Nome completo: ${pName}`, margin + 5, currentY + 12);
-  doc.text(`Data da falta: ${dateStr}`, margin + 5, currentY + 17);
-  doc.text(`Horário agendado: ${timeStr}`, margin + 5, currentY + 22);
-  doc.text(`Modalidade: ${mode}`, margin + 5, currentY + 27);
-  
-  currentY += 36;
-  
-  // Motivo da falta
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(10);
-  doc.setTextColor(136, 14, 79);
-  doc.text("MOTIVO DA FALTA", margin, currentY);
-  currentY += 6;
-  
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(9.5);
-  doc.setTextColor(55, 71, 79);
-  
-  const lines = doc.splitTextToSize(reason, contentWidth);
-  lines.forEach(line => {
-    doc.text(line, margin, currentY, { align: "justify", maxWidth: contentWidth });
-    currentY += 5;
-  });
-  
-  currentY += 6;
-  doc.setFont("helvetica", "bold");
-  doc.text("Status: Falta", margin, currentY);
-  
-  // Assinatura
-  currentY += 35;
-  doc.setDrawColor(55, 71, 79);
-  doc.setLineWidth(0.3);
-  doc.line(70, currentY, 140, currentY);
-  currentY += 5;
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(9.5);
-  doc.setTextColor(55, 71, 79);
-  doc.text("Daniele Sousa Santos", 105, currentY, { align: "center" });
-  currentY += 4;
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(8.5);
-  doc.setTextColor(120, 144, 156);
-  doc.text("Psicóloga - CRP: 22/07398", 105, currentY, { align: "center" });
-  
-  const fileName = `Registro_Falta_${pName.replace(/\s+/g, '_')}_${dateStr.replace(/\//g, '-')}.pdf`;
-  doc.save(fileName);
-}
-
-/* GERAÇÃO DE PDF DA SESSÃO COM TEXTO JUSTIFICADO E QUEBRA DE PÁGINA PERFEITA */
+/* GERAÇÃO DE PDF DA SESSÃO COM TEXTO JUSTIFICADO */
 async function generatePDF(sessionId) {
   const session = await getById('sessoes', sessionId);
   if (!session) return;
-  const patient = await getById('pacientes', session.pacienteId || session.patientId);
+  const patient = await getById('pacientes', session.pacienteld || session.patientId);
   const evolutions = await getAll('evolucoes');
-  const evo = evolutions.find(e => Number(e.sessaoId) === Number(sessionId));
-  
+  const evo = evolutions.find(e => Number(e.sessaold) === Number(sessionId));
+
   if (!evo) {
     alert('Evolução clínica não encontrada.');
     return;
@@ -1339,19 +1222,19 @@ async function generatePDF(sessionId) {
 
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF('p', 'mm', 'a4');
-  
-  const pName = patient ? (patient.nome || patient.name || '') : '';
-  const pType = patient ? (patient.tipo || patient.type || '') : '';
-  const pPhone = patient ? (patient.telefone || patient.phone || '') : '';
-  const pGuardian = patient ? (patient.responsavel || patient.guardian || '') : '';
-  const pKinship = patient ? (patient.parentesco || patient.kinship || 'Resp.') : '';
-  const pGuardianPhone = patient ? (patient.telefoneResponsavel || patient.guardianPhone || 'N/A') : '';
-  
+
+  const pName = patient.nome || patient.name || '';
+  const pType = patient.tipo || patient.type || '';
+  const pPhone = patient.telefone || patient.phone || '';
+  const pGuardian = patient.responsavel || patient.guardian || '';
+  const pKinship = patient.parentesco || patient.kinship || 'Resp.';
+  const pGuardianPhone = patient.telefoneResponsavel || patient.guardianPhone || 'N/A';
+
   const dtStr = session.dataHora || session.datetime;
   const dateFormatted = new Date(dtStr).toLocaleString('pt-BR');
   const mode = session.modalidade || session.mode || '';
   const status = session.status || '';
-  
+
   const complaint = evo.queixa || evo.complaint || '';
   const demand = evo.demanda || evo.demand || '';
   const description = evo.descricao || evo.description || '';
@@ -1377,13 +1260,11 @@ async function generatePDF(sessionId) {
   doc.setTextColor(136, 14, 79);
   doc.text("Daniele Sousa Santos", 105, currentY, { align: "center" });
   currentY += 6;
-  
   doc.setFont("helvetica", "normal");
   doc.setFontSize(10);
   doc.setTextColor(120, 144, 156);
   doc.text("Psicóloga - CRP: 22/07398", 105, currentY, { align: "center" });
   currentY += 8;
-
   doc.setFont("helvetica", "bold");
   doc.setFontSize(12);
   doc.setTextColor(216, 27, 96);
@@ -1399,42 +1280,35 @@ async function generatePDF(sessionId) {
   doc.setDrawColor(244, 143, 177);
   let boxHeight = pType === 'Infantil' && pGuardian ? 34 : 26;
   doc.roundedRect(margin, currentY, contentWidth, boxHeight, 2, 2, 'FD');
-
   doc.setFont("helvetica", "bold");
   doc.setFontSize(10);
   doc.setTextColor(136, 14, 79);
   doc.text("IDENTIFICAÇÃO DO PACIENTE", margin + 5, currentY + 6);
-  
   doc.setFont("helvetica", "normal");
   doc.setFontSize(9.5);
   doc.setTextColor(55, 71, 79);
   doc.text(`Nome: ${pName}`, margin + 5, currentY + 12);
   doc.text(`Contato: ${pPhone}`, margin + 5, currentY + 17);
   doc.text(`Tipo: ${pType}`, margin + 5, currentY + 22);
-  
   if (pType === 'Infantil' && pGuardian) {
-    doc.text(`Responsável Legal: ${pGuardian} (${pKinship}) - Tel: ${pGuardianPhone}`, margin + 5, currentY + 27);
+    doc.text(`Responsável Legal: ${pGuardian} (${pKinship}) Tel: ${pGuardianPhone}`, margin + 5, currentY + 27);
   }
-
   currentY += boxHeight + 6;
 
   // Box Dados da Sessão
   doc.setFillColor(255, 245, 248);
   doc.setDrawColor(244, 143, 177);
   doc.roundedRect(margin, currentY, contentWidth, 26, 2, 2, 'FD');
-
   doc.setFont("helvetica", "bold");
   doc.setFontSize(10);
   doc.setTextColor(136, 14, 79);
   doc.text("DADOS DA SESSÃO", margin + 5, currentY + 6);
-
   doc.setFont("helvetica", "normal");
   doc.setFontSize(9.5);
   doc.setTextColor(55, 71, 79);
   doc.text(`Data/Hora: ${dateFormatted}`, margin + 5, currentY + 12);
   doc.text(`Modalidade: ${mode}`, margin + 5, currentY + 17);
   doc.text(`Status: ${status.toUpperCase()}`, margin + 5, currentY + 22);
-
   currentY += 32;
 
   // Título da Seção Clínica
@@ -1449,7 +1323,7 @@ async function generatePDF(sessionId) {
   doc.line(margin, currentY, 210 - margin, currentY);
   currentY += 8;
 
-  // Função auxiliar para adicionar seções com texto JUSTIFICADO
+  // Função auxiliar para adicionar seções com TEXTO JUSTIFICADO
   function addClinicalSection(title, text) {
     if (!text || !text.trim()) return;
     checkPageBreak(12);
@@ -1466,6 +1340,7 @@ async function generatePDF(sessionId) {
     const lines = doc.splitTextToSize(text, contentWidth);
     lines.forEach((line) => {
       checkPageBreak(5);
+      // Garantido o alinhamento justificado no PDF
       doc.text(line, margin, currentY, { align: "justify", maxWidth: contentWidth });
       currentY += 4.5;
     });
@@ -1503,6 +1378,97 @@ function generateSessionPDF(sessionId) {
   generatePDF(sessionId);
 }
 
+/* GERAR PDF INDIVIDUAL DE FALTA */
+async function generateFaultPDF(sessionId) {
+  const session = await getById('sessoes', sessionId);
+  if (!session) return;
+  const patient = await getById('pacientes', session.pacienteld || session.patientId);
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF('p', 'mm', 'a4');
+
+  const pName = patient ? (patient.nome || patient.name) : 'Paciente Não Encontrado';
+  const dtStr = session.dataHora || session.datetime;
+  const dt = new Date(dtStr);
+  const dateStr = dt.toLocaleDateString('pt-BR');
+  const timeStr = dt.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  const mode = session.modalidade || session.mode || '';
+  const reason = session.motivoFalta || 'Motivo não informado.';
+
+  let currentY = 25;
+
+  // Cabeçalho
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(16);
+  doc.setTextColor(136, 14, 79);
+  doc.text("REGISTRO DE FALTA", 105, currentY, { align: "center" });
+  currentY += 10;
+
+  doc.setFontSize(11);
+  doc.setTextColor(55, 71, 79);
+  doc.text("Dados da psicóloga", 20, currentY);
+  currentY += 6;
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10);
+  doc.text("Daniele Sousa Santos", 20, currentY);
+  currentY += 5;
+  doc.text("Psicóloga", 20, currentY);
+  currentY += 5;
+  doc.text("CRP 22/07398", 20, currentY);
+  currentY += 10;
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(11);
+  doc.text("Dados do paciente", 20, currentY);
+  currentY += 6;
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10);
+  doc.text(`Nome completo: ${pName}`, 20, currentY);
+  currentY += 5;
+  doc.text(`Data da falta: ${dateStr}`, 20, currentY);
+  currentY += 5;
+  doc.text(`Horário agendado: ${timeStr}`, 20, currentY);
+  currentY += 5;
+  doc.text(`Modalidade: ${mode}`, 20, currentY);
+  currentY += 10;
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(11);
+  doc.text("Motivo da falta", 20, currentY);
+  currentY += 6;
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(10);
+
+  const lines = doc.splitTextToSize(reason, 170);
+  lines.forEach((line) => {
+    doc.text(line, 20, currentY, { align: "justify", maxWidth: 170 });
+    currentY += 5;
+  });
+  currentY += 5;
+
+  doc.setFont("helvetica", "bold");
+  doc.text("Status: Falta", 20, currentY);
+
+  // Assinatura
+  currentY += 35;
+  doc.setDrawColor(55, 71, 79);
+  doc.setLineWidth(0.3);
+  doc.line(70, currentY, 140, currentY);
+  currentY += 5;
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(9.5);
+  doc.setTextColor(55, 71, 79);
+  doc.text("Daniele Sousa Santos", 105, currentY, { align: "center" });
+  currentY += 4;
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(8.5);
+  doc.setTextColor(120, 144, 156);
+  doc.text("Psicóloga - CRP: 22/07398", 105, currentY, { align: "center" });
+
+  const fileName = `Registro_Falta_${pName.replace(/\s+/g, '_')}_${dateStr.replace(/\//g, '-')}.pdf`;
+  doc.save(fileName);
+}
+
 /* FINANCEIRO MENSAL */
 function initFinanceView() {
   const now = new Date();
@@ -1514,35 +1480,34 @@ function initFinanceView() {
 async function renderFinancialReport() {
   const selectedMonth = document.getElementById('finance-month-select').value;
   if (!selectedMonth) return;
-  
+
   const sessions = await getAll('sessoes');
   const patients = await getAll('pacientes');
-  
-  // Exclui faltas das métricas financeiras
+
+  // Ignorar faltas no financeiro
   const monthSessions = sessions.filter(s => (s.dataHora || s.datetime || '').startsWith(selectedMonth) && s.status !== 'falta');
-  
+
   let totalGross = 0;
   let totalReceived = 0;
   let totalPending = 0;
-  
+
   const tbody = document.getElementById('finance-table-body');
   tbody.innerHTML = '';
-  
+
   monthSessions.forEach(s => {
-    const patient = patients.find(p => Number(p.id) === Number(s.pacienteId || s.patientId));
+    const patient = patients.find(p => Number(p.id) === Number(s.pacienteld || s.patientId));
     const val = parseFloat(s.valor || s.value) || 0;
     totalGross += val;
-    
     const isPaid = (s.pagamentoStatus || s.paymentStatus) === 'pago';
     if (isPaid) totalReceived += val;
     else totalPending += val;
-    
+
     const dtStr = s.dataHora || s.datetime;
     const dt = new Date(dtStr).toLocaleString('pt-BR');
     const pName = patient ? (patient.nome || patient.name) : 'Paciente Não Encontrado';
     const sStatus = s.status || '';
     const pStatus = s.pagamentoStatus || s.paymentStatus || 'pendente';
-    
+
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${dt}</td>
@@ -1557,11 +1522,11 @@ async function renderFinancialReport() {
       </td>`;
     tbody.appendChild(tr);
   });
-  
+
   document.getElementById('fin-total-gross').innerText = totalGross.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   document.getElementById('fin-total-received').innerText = totalReceived.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   document.getElementById('fin-total-pending').innerText = totalPending.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-  
+
   const adimplenceRate = totalGross > 0 ? Math.round((totalReceived / totalGross) * 100) : 0;
   document.getElementById('fin-adimplence').innerText = `${adimplenceRate}%`;
 }
@@ -1581,62 +1546,63 @@ async function togglePaymentStatusFromFinance(sessionId) {
 /* RELATÓRIO DE FALTAS LOGIC */
 async function initFaultsView() {
   const patients = await getAll('pacientes');
-  const patientSelect = document.getElementById('fault-patient-filter');
-  patientSelect.innerHTML = '<option value="">Todos os Pacientes</option>';
+  const select = document.getElementById('fault-report-patient');
+  select.innerHTML = '<option value="">Todos os Pacientes</option>';
   patients.forEach(p => {
-    patientSelect.innerHTML += `<option value="${p.id}">${p.nome || p.name}</option>`;
+    select.innerHTML += `<option value="${p.id}">${p.nome || p.name}</option>`;
   });
 
+  // Definir semana atual
   const now = new Date();
-  document.getElementById('fault-start-date').value = now.toISOString().substring(0, 10);
-  document.getElementById('fault-month-input').value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
-  document.getElementById('fault-year-input').value = now.getFullYear();
+  const year = now.getFullYear();
+  const firstDay = new Date(year, 0, 1);
+  const weekNum = Math.ceil((((now - firstDay) / 86400000) + firstDay.getDay() + 1) / 7);
+  document.getElementById('fault-report-week').value = `${year}-W${String(weekNum).padStart(2, '0')}`;
+  document.getElementById('fault-report-month').value = `${year}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  document.getElementById('fault-report-year').value = year;
 
-  toggleFaultReportFilters();
   renderFaultsReport();
 }
 
-function toggleFaultReportFilters() {
-  const type = document.getElementById('fault-report-type').value;
-  document.querySelectorAll('.fault-filter-group').forEach(el => el.style.display = 'none');
-  const activeGrp = document.getElementById(`filter-container-${type}`);
-  if (activeGrp) activeGrp.style.display = 'flex';
+function toggleFaultPeriodInputs() {
+  const type = document.getElementById('fault-report-period-type').value;
+  document.getElementById('group-fault-week').style.display = type === 'semana' ? 'block' : 'none';
+  document.getElementById('group-fault-month').style.display = type === 'mes' ? 'block' : 'none';
+  document.getElementById('group-fault-year').style.display = type === 'ano' ? 'block' : 'none';
 }
 
 async function getFilteredFaults() {
-  const type = document.getElementById('fault-report-type').value;
-  const selectedPatientId = document.getElementById('fault-patient-filter').value;
-  const allSessions = await getAll('sessoes');
+  const periodType = document.getElementById('fault-report-period-type').value;
+  const patientId = document.getElementById('fault-report-patient').value;
 
+  const allSessions = await getAll('sessoes');
   let faults = allSessions.filter(s => s.status === 'falta');
 
-  if (selectedPatientId) {
-    faults = faults.filter(s => Number(s.pacienteId || s.patientId) === Number(selectedPatientId));
+  if (patientId) {
+    faults = faults.filter(s => Number(s.pacienteld || s.patientId) === Number(patientId));
   }
 
-  if (type === 'semana') {
-    const startDateVal = document.getElementById('fault-start-date').value;
-    if (startDateVal) {
-      const start = new Date(startDateVal + 'T00:00:00');
-      const end = new Date(start);
-      end.setDate(end.getDate() + 7);
+  if (periodType === 'semana') {
+    const weekVal = document.getElementById('fault-report-week').value; // EX: 2026-W37
+    if (weekVal) {
+      const [y, w] = weekVal.split('-W');
       faults = faults.filter(s => {
         const dt = new Date(s.dataHora || s.datetime);
-        return dt >= start && dt < end;
+        const year = dt.getFullYear();
+        const firstDay = new Date(year, 0, 1);
+        const weekNum = Math.ceil((((dt - firstDay) / 86400000) + firstDay.getDay() + 1) / 7);
+        return String(year) === y && String(weekNum).padStart(2, '0') === w;
       });
     }
-  } else if (type === 'mes') {
-    const monthVal = document.getElementById('fault-month-input').value;
+  } else if (periodType === 'mes') {
+    const monthVal = document.getElementById('fault-report-month').value; // EX: 2026-09
     if (monthVal) {
       faults = faults.filter(s => (s.dataHora || s.datetime || '').startsWith(monthVal));
     }
-  } else if (type === 'ano') {
-    const yearVal = document.getElementById('fault-year-input').value;
+  } else if (periodType === 'ano') {
+    const yearVal = document.getElementById('fault-report-year').value; // EX: 2026
     if (yearVal) {
-      faults = faults.filter(s => {
-        const dt = new Date(s.dataHora || s.datetime);
-        return String(dt.getFullYear()) === yearVal;
-      });
+      faults = faults.filter(s => (s.dataHora || s.datetime || '').startsWith(yearVal));
     }
   }
 
@@ -1647,126 +1613,105 @@ async function getFilteredFaults() {
 async function renderFaultsReport() {
   const faults = await getFilteredFaults();
   const patients = await getAll('pacientes');
-  const tbody = document.getElementById('faults-report-tbody');
+  const tbody = document.getElementById('faults-report-table-body');
   tbody.innerHTML = '';
 
   if (faults.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">Nenhuma falta encontrada para este período/filtro.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color: var(--text-muted);">Nenhuma falta encontrada para este filtro.</td></tr>';
     return;
   }
 
   faults.forEach(f => {
-    const patient = patients.find(p => Number(p.id) === Number(f.pacienteId || f.patientId));
-    const dt = new Date(f.dataHora || f.datetime).toLocaleString('pt-BR');
+    const patient = patients.find(p => Number(p.id) === Number(f.pacienteld || f.patientId));
+    const pName = patient ? (patient.nome || patient.name) : 'Paciente Não Encontrado';
+    const dt = new Date(f.dataHora || f.datetime);
+    const dateStr = dt.toLocaleDateString('pt-BR');
+    const timeStr = dt.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    const mode = f.modalidade || f.mode || '-';
+    const reason = f.motivoFalta || 'Não informado';
+
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td>${dt}</td>
-      <td><strong>${patient ? (patient.nome || patient.name) : 'N/A'}</strong></td>
-      <td>${f.modalidade || f.mode || ''}</td>
-      <td>${f.motivoFalta || 'Não informado'}</td>
-    `;
+      <td>${dateStr}</td>
+      <td>${timeStr}</td>
+      <td><strong>${pName}</strong></td>
+      <td>${mode}</td>
+      <td>${reason}</td>`;
     tbody.appendChild(tr);
   });
 }
 
-async function generateFaultsReportPDF() {
+async function downloadFaultsReportPDF() {
   const faults = await getFilteredFaults();
   const patients = await getAll('pacientes');
-  const type = document.getElementById('fault-report-type').value;
+  const periodType = document.getElementById('fault-report-period-type').value;
 
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF('p', 'mm', 'a4');
 
-  const pageHeight = 297;
-  const margin = 20;
-  const contentWidth = 170;
   let currentY = 20;
 
-  function checkPageBreak(heightNeeded) {
-    if (currentY + heightNeeded > pageHeight - margin) {
-      doc.addPage();
-      currentY = margin;
-      return true;
-    }
-    return false;
-  }
-
-  let titlePeriod = "RELATÓRIO DE FALTAS";
-  if (type === 'semana') titlePeriod = "RELATÓRIO SEMANAL DE FALTAS";
-  if (type === 'mes') titlePeriod = "RELATÓRIO MENSAL DE FALTAS";
-  if (type === 'ano') titlePeriod = "RELATÓRIO ANUAL DE FALTAS";
-
+  // Cabeçalho
   doc.setFont("helvetica", "bold");
   doc.setFontSize(14);
   doc.setTextColor(136, 14, 79);
-  doc.text(titlePeriod, 105, currentY, { align: "center" });
-  currentY += 10;
+  doc.text(`RELATÓRIO ${periodType.toUpperCase()} DE FALTAS`, 105, currentY, { align: "center" });
+  currentY += 8;
 
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(10);
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(9.5);
   doc.setTextColor(55, 71, 79);
-  doc.text("Psicóloga: Daniele Sousa Santos", margin, currentY);
-  doc.text("CRP: 22/07398", 140, currentY);
-  currentY += 6;
-
-  if (type === 'semana') {
-    const startDateVal = document.getElementById('fault-start-date').value;
-    if (startDateVal) {
-      const start = new Date(startDateVal + 'T00:00:00');
-      const end = new Date(start);
-      end.setDate(end.getDate() + 6);
-      doc.setFont("helvetica", "normal");
-      doc.text(`Período: ${start.toLocaleDateString('pt-BR')} a ${end.toLocaleDateString('pt-BR')}`, margin, currentY);
-      currentY += 6;
-    }
-  }
+  doc.text("Psicóloga: Daniele Sousa Santos", 20, currentY);
+  currentY += 5;
+  doc.text("CRP: 22/07398", 20, currentY);
+  currentY += 8;
 
   doc.setDrawColor(216, 27, 96);
-  doc.setLineWidth(0.5);
-  doc.line(margin, currentY, 210 - margin, currentY);
+  doc.setLineWidth(0.4);
+  doc.line(20, currentY, 190, currentY);
   currentY += 10;
 
   if (faults.length === 0) {
-    doc.setFont("helvetica", "italic");
-    doc.text("Nenhuma falta registrada no período selecionado.", margin, currentY);
+    doc.text("Nenhuma falta registrada no período.", 20, currentY);
   } else {
-    faults.forEach((f) => {
-      checkPageBreak(30);
-      const patient = patients.find(p => Number(p.id) === Number(f.pacienteId || f.patientId));
-      const dtObj = new Date(f.dataHora || f.datetime);
-      const dateStr = dtObj.toLocaleDateString('pt-BR');
-      const timeStr = dtObj.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    faults.forEach(f => {
+      const patient = patients.find(p => Number(p.id) === Number(f.pacienteld || f.patientId));
+      const pName = patient ? (patient.nome || patient.name) : 'Paciente Desconhecido';
+      const dt = new Date(f.dataHora || f.datetime);
+      const dateStr = dt.toLocaleDateString('pt-BR');
+      const timeStr = dt.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+      const mode = f.modalidade || f.mode || '-';
+      const reason = f.motivoFalta || 'Não informado.';
+
+      if (currentY > 260) {
+        doc.addPage();
+        currentY = 20;
+      }
 
       doc.setFont("helvetica", "bold");
-      doc.setFontSize(9.5);
-      doc.setTextColor(136, 14, 79);
-      doc.text(`Paciente: ${patient ? (patient.nome || patient.name) : 'N/A'}`, margin, currentY);
+      doc.text(`Paciente: ${pName}`, 20, currentY);
       currentY += 5;
-
       doc.setFont("helvetica", "normal");
-      doc.setFontSize(9);
-      doc.setTextColor(55, 71, 79);
-      doc.text(`Data: ${dateStr}  |  Horário: ${timeStr}  |  Modalidade: ${f.modalidade || f.mode || ''}`, margin, currentY);
+      doc.text(`Data: ${dateStr}   Horário: ${timeStr}   Modalidade: ${mode}`, 20, currentY);
       currentY += 5;
 
-      const reasonText = `Motivo: ${f.motivoFalta || 'Não informado'}`;
-      const lines = doc.splitTextToSize(reasonText, contentWidth);
+      const lines = doc.splitTextToSize(`Motivo: ${reason}`, 170);
       lines.forEach(line => {
-        checkPageBreak(5);
-        doc.text(line, margin, currentY, { align: "justify", maxWidth: contentWidth });
-        currentY += 4.5;
+        doc.text(line, 20, currentY, { align: "justify", maxWidth: 170 });
+        currentY += 5;
       });
-
       currentY += 4;
-      doc.setDrawColor(244, 143, 177);
-      doc.setLineWidth(0.2);
-      doc.line(margin, currentY, 210 - margin, currentY);
-      currentY += 6;
     });
   }
 
-  checkPageBreak(35);
-  currentY += 20;
+  // Assinatura ao final
+  if (currentY > 250) {
+    doc.addPage();
+    currentY = 30;
+  } else {
+    currentY += 15;
+  }
+
   doc.setDrawColor(55, 71, 79);
   doc.setLineWidth(0.3);
   doc.line(70, currentY, 140, currentY);
@@ -1781,44 +1726,44 @@ async function generateFaultsReportPDF() {
   doc.setTextColor(120, 144, 156);
   doc.text("Psicóloga - CRP: 22/07398", 105, currentY, { align: "center" });
 
-  doc.save(`Relatorio_Faltas_${new Date().toISOString().substring(0, 10)}.pdf`);
+  doc.save(`Relatorio_Faltas_${periodType}.pdf`);
 }
 
-/* MODAIS DE SESSÃO, EVOLUÇÃO E RECIBOS */
-function toggleSessionFieldsByStatus() {
+/* CONTROLE DE EXIBIÇÃO DE CAMPOS NA SESSÃO */
+function toggleSessionStatusFields() {
   const status = document.getElementById('session-status').value;
-  const fieldVal = document.getElementById('field-group-value');
-  const fieldPay = document.getElementById('field-group-payment');
-  const fieldFault = document.getElementById('field-group-fault-reason');
-  
+  const valGroup = document.getElementById('group-session-value');
+  const payGroup = document.getElementById('group-session-payment');
+  const faultGroup = document.getElementById('group-session-fault-reason');
+
   const valInput = document.getElementById('session-value');
-  const payInput = document.getElementById('session-payment-status');
+  const paySelect = document.getElementById('session-payment-status');
   const faultInput = document.getElementById('session-fault-reason');
 
   if (status === 'falta') {
-    fieldVal.style.display = 'none';
-    fieldPay.style.display = 'none';
-    fieldFault.style.display = 'block';
-    
+    valGroup.style.display = 'none';
+    payGroup.style.display = 'none';
+    faultGroup.style.display = 'block';
+
     valInput.required = false;
-    valInput.value = '0';
-    payInput.required = false;
+    paySelect.required = false;
     faultInput.required = true;
   } else {
-    fieldVal.style.display = 'block';
-    fieldPay.style.display = 'block';
-    fieldFault.style.display = 'none';
-    
+    valGroup.style.display = 'block';
+    payGroup.style.display = 'block';
+    faultGroup.style.display = 'none';
+
     valInput.required = true;
-    payInput.required = true;
+    paySelect.required = true;
     faultInput.required = false;
   }
 }
 
+/* MODAIS DE SESSÃO, EVOLUÇÃO E RECIBOS */
 function openSessionModal(sessionId = null) {
   document.getElementById('form-session').reset();
   document.getElementById('session-id').value = '';
-  
+
   if (sessionId) {
     getById('sessoes', sessionId).then(s => {
       document.getElementById('session-id').value = s.id;
@@ -1828,15 +1773,15 @@ function openSessionModal(sessionId = null) {
       document.getElementById('session-value').value = s.valor || s.value || '';
       document.getElementById('session-payment-status').value = s.pagamentoStatus || s.paymentStatus || 'pendente';
       document.getElementById('session-fault-reason').value = s.motivoFalta || '';
-      
-      toggleSessionFieldsByStatus();
+
+      toggleSessionStatusFields();
       openModal('modal-session');
     });
   } else {
     const now = new Date();
     now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
     document.getElementById('session-datetime').value = now.toISOString().slice(0, 16);
-    toggleSessionFieldsByStatus();
+    toggleSessionStatusFields();
     openModal('modal-session');
   }
 }
@@ -1845,24 +1790,31 @@ async function handleSessionSubmit(e) {
   e.preventDefault();
   const id = document.getElementById('session-id').value;
   const status = document.getElementById('session-status').value;
-  
+
   const sessionData = {
-    pacienteId: Number(currentPatientId),
+    pacienteld: Number(currentPatientId),
+    patientId: Number(currentPatientId),
     dataHora: document.getElementById('session-datetime').value,
     modalidade: document.getElementById('session-mode').value,
-    status: status,
-    valor: status === 'falta' ? 0 : parseFloat(document.getElementById('session-value').value || 0),
-    pagamentoStatus: status === 'falta' ? 'N/A' : document.getElementById('session-payment-status').value,
-    motivoFalta: status === 'falta' ? document.getElementById('session-fault-reason').value : ''
+    status: status
   };
-  
+
+  if (status === 'falta') {
+    sessionData.motivoFalta = document.getElementById('session-fault-reason').value;
+    sessionData.valor = 0;
+    sessionData.pagamentoStatus = 'N/A';
+  } else {
+    sessionData.valor = parseFloat(document.getElementById('session-value').value);
+    sessionData.pagamentoStatus = document.getElementById('session-payment-status').value;
+  }
+
   if (id) {
     const existing = await getById('sessoes', id);
     sessionData.id = Number(id);
     if (existing && existing.recibo) sessionData.recibo = existing.recibo;
     if (existing && existing.receipt) sessionData.receipt = existing.receipt;
   }
-  
+
   await saveItem('sessoes', sessionData);
   closeModal('modal-session');
   loadProntuarioData(currentPatientId);
@@ -1873,7 +1825,7 @@ function openEvolutionModal(sessionId, evolutionId = null) {
   document.getElementById('form-evolution').reset();
   document.getElementById('evolution-id').value = '';
   document.getElementById('evolution-session-id').value = sessionId;
-  
+
   if (evolutionId) {
     getById('evolucoes', evolutionId).then(e => {
       if (e) {
@@ -1894,18 +1846,18 @@ async function handleEvolutionSubmit(e) {
   e.preventDefault();
   const id = document.getElementById('evolution-id').value;
   const sessionId = document.getElementById('evolution-session-id').value;
-  
+
   const evoData = {
-    sessaoId: Number(sessionId),
-    pacienteId: Number(currentPatientId),
+    sessaold: Number(sessionId),
+    pacienteld: Number(currentPatientId),
     queixa: document.getElementById('evo-complaint').value,
     demanda: document.getElementById('evo-demand').value,
     descricao: document.getElementById('evo-description').value,
     analise: document.getElementById('evo-analysis').value
   };
-  
+
   if (id) evoData.id = Number(id);
-  
+
   await saveItem('evolucoes', evoData);
   closeModal('modal-evolution');
   loadProntuarioData(currentPatientId);
@@ -1914,13 +1866,12 @@ async function handleEvolutionSubmit(e) {
 async function openReceiptModal(sessionId) {
   document.getElementById('form-receipt').reset();
   document.getElementById('receipt-session-id').value = sessionId;
-  
   const statusDiv = document.getElementById('receipt-current-status');
   const btnRemove = document.getElementById('btn-remove-receipt');
-  
+
   const session = await getById('sessoes', sessionId);
   const rec = session ? (session.recibo || session.receipt) : null;
-  
+
   if (rec) {
     statusDiv.innerHTML = `<p style="color: var(--success-color);">Recibo Anexado: <strong>${rec.nome || rec.name}</strong></p>`;
     btnRemove.style.display = 'inline-block';
@@ -1935,7 +1886,7 @@ async function handleReceiptSubmit(e) {
   e.preventDefault();
   const sessionId = document.getElementById('receipt-session-id').value;
   const fileInput = document.getElementById('receipt-file');
-  
+
   if (fileInput.files.length > 0) {
     const file = fileInput.files[0];
     const reader = new FileReader();
@@ -1966,33 +1917,35 @@ async function removeReceipt() {
 
 function openMonthlySummaryModal() {
   document.getElementById('summary-month-select').value = '';
-  document.getElementById('summary-results').innerHTML = '<p style="color: var(--text-muted);">Escolha um mês para visualizar o consolidado do paciente.</p>';
+  document.getElementById('summary-results').innerHTML =
+    '<p style="color: var(--text-muted);">Escolha um mês para visualizar o consolidado do paciente.</p>';
   openModal('modal-monthly-summary');
 }
 
 async function generateMonthlySummary() {
   const monthVal = document.getElementById('summary-month-select').value;
   if (!monthVal || !currentPatientId) return;
-  
+
   const allSessions = await getAll('sessoes');
-  const patientSessions = allSessions.filter(s => Number(s.pacienteId || s.patientId) === Number(currentPatientId) && (s.dataHora || s.datetime || '').startsWith(monthVal));
-  
+  const patientSessions = allSessions.filter(s =>
+    Number(s.pacienteld || s.patientId) === Number(currentPatientId) && (s.dataHora || s.datetime || '').startsWith(monthVal));
+
   let totalSessions = patientSessions.length;
   let realizadas = 0, canceladas = 0, faltas = 0;
   let valorTotal = 0, valorPago = 0;
-  
+
   patientSessions.forEach(s => {
     if (s.status === 'realizada') realizadas++;
     if (s.status === 'cancelada') canceladas++;
     if (s.status === 'falta') faltas++;
-    
+
     if (s.status !== 'falta') {
       const v = parseFloat(s.valor || s.value) || 0;
       valorTotal += v;
       if ((s.pagamentoStatus || s.paymentStatus) === 'pago') valorPago += v;
     }
   });
-  
+
   document.getElementById('summary-results').innerHTML = `
     <p><strong>Total de Sessões no Mês:</strong> ${totalSessions}</p>
     <p><strong>Realizadas:</strong> ${realizadas} | <strong>Canceladas:</strong> ${canceladas} | <strong>Faltas:</strong> ${faltas}</p>
