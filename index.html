@@ -7,8 +7,10 @@
 <!-- Bibliotecas jspdf e html2canvas -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<!-- Biblioteca PDF.js para Extração de Texto dos PDFs -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <!-- Fonte Google Poppins -->
-<link href="https://fonts.googleapis.com/css?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
   --primary-pink: #d81b60;
@@ -28,21 +30,18 @@
   --shadow-sm: 0 2px 8px rgba(216, 27, 96, 0.08);
   --shadow-md: 0 4px 15px rgba(216, 27, 96, 0.12);
 }
-
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   font-family: 'Poppins', sans-serif;
 }
-
 body {
   background-color: var(--bg-color);
   color: var(--text-main);
   display: flex;
   min-height: 100vh;
 }
-
 /* Sidebar Navegação */
 .sidebar {
   width: 260px;
@@ -54,32 +53,27 @@ body {
   gap: 25px;
   box-shadow: 4px 0 15px rgba(0,0,0,0.1);
 }
-
 .sidebar-header {
   text-align: center;
   padding-bottom: 15px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
-
 .sidebar-header h2 {
   font-size: 1.2rem;
   font-weight: 600;
   letter-spacing: 0.5px;
 }
-
 .sidebar-header p {
   font-size: 0.75rem;
   opacity: 0.8;
   margin-top: 4px;
 }
-
 .nav-links {
   list-style: none;
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
-
 .nav-links button {
   width: 100%;
   padding: 12px 16px;
@@ -96,33 +90,28 @@ body {
   align-items: center;
   gap: 10px;
 }
-
 .nav-links button:hover, .nav-links button.active {
   background: rgba(255, 255, 255, 0.2);
   color: white;
   transform: translateX(4px);
 }
-
 /* Área Principal */
 .main-content {
   flex: 1;
   padding: 35px;
   overflow-y: auto;
 }
-
 .header-actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
 }
-
 .header-actions h1 {
   color: var(--dark-pink);
   font-size: 1.8rem;
   font-weight: 600;
 }
-
 /* Botões Globais */
 .btn-primary {
   background: linear-gradient(135deg, var(--primary-pink) 0%, var(--accent-pink) 100%);
@@ -135,12 +124,10 @@ body {
   box-shadow: var(--shadow-sm);
   transition: all 0.2s ease;
 }
-
 .btn-primary:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
-
 .btn-secondary {
   background-color: var(--light-pink);
   color: var(--dark-pink);
@@ -151,9 +138,7 @@ body {
   font-weight: 500;
   transition: all 0.2s;
 }
-
 .btn-secondary:hover { background-color: var(--soft-pink); }
-
 .btn-danger {
   background-color: var(--danger-color);
   color: white;
@@ -164,9 +149,7 @@ body {
   font-size: 0.85rem;
   transition: opacity 0.2s;
 }
-
 .btn-danger:hover { opacity: 0.9; }
-
 .btn-pdf {
   background: linear-gradient(135deg, #8e24aa 0%, #ab47bc 100%);
   color: white;
@@ -177,7 +160,6 @@ body {
   font-size: 0.85rem;
   box-shadow: 0 2px 5px rgba(142, 36, 170, 0.2);
 }
-
 .btn-back {
   background-color: #eceff1;
   color: var(--text-main);
@@ -187,7 +169,6 @@ body {
   cursor: pointer;
   font-weight: 500;
 }
-
 /* Cards e Dashboard */
 .card-grid {
   display: grid;
@@ -195,7 +176,6 @@ body {
   gap: 20px;
   margin-bottom: 30px;
 }
-
 .card {
   background: var(--card-bg);
   padding: 22px;
@@ -204,12 +184,10 @@ body {
   border: 1px solid rgba(244, 143, 177, 0.3);
   transition: transform 0.2s, box-shadow 0.2s;
 }
-
 .card:hover {
   transform: translateY(-3px);
   box-shadow: var(--shadow-md);
 }
-
 .card h3 {
   font-size: 0.85rem;
   text-transform: uppercase;
@@ -217,13 +195,11 @@ body {
   color: var(--text-muted);
   margin-bottom: 10px;
 }
-
 .card .value {
   font-size: 1.8rem;
   font-weight: 700;
   color: var(--dark-pink);
 }
-
 /* Tabelas */
 .table-container {
   background: white;
@@ -233,27 +209,19 @@ body {
   border: 1px solid rgba(244, 143, 177, 0.2);
   margin-bottom: 25px;
 }
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
+table { width: 100%; border-collapse: collapse; }
 th, td {
   padding: 14px 18px;
   text-align: left;
   border-bottom: 1px solid var(--light-pink);
 }
-
 th {
   font-size: 0.92rem;
   background-color: var(--light-pink);
   color: var(--dark-pink);
   font-weight: 600;
 }
-
 tr:hover { background-color: #fff8fa; }
-
 /* Badges e Status */
 .badge {
   padding: 4px 10px;
@@ -262,7 +230,6 @@ tr:hover { background-color: #fff8fa; }
   font-weight: 600;
   display: inline-block;
 }
-
 .badge-active { background-color: #e8f5e9; color: var(--success-color); }
 .badge-inactive { background-color: #ffebee; color: var(--danger-color); }
 .badge-paid { background-color: #e8f5e9; color: var(--success-color); }
@@ -271,7 +238,6 @@ tr:hover { background-color: #fff8fa; }
 
 .view-section { display: none; }
 .view-section.active { display: block; }
-
 .filter-bar {
   display: flex;
   gap: 12px;
@@ -279,7 +245,6 @@ tr:hover { background-color: #fff8fa; }
   align-items: center;
   flex-wrap: wrap;
 }
-
 /* Modal */
 .modal {
   display: none;
@@ -291,29 +256,24 @@ tr:hover { background-color: #fff8fa; }
   align-items: center;
   z-index: 1000;
 }
-
 .modal.active { display: flex; }
-
 .modal-content {
   background: white;
   padding: 30px;
   border-radius: 16px;
-  max-width: 650px;
+  max-width: 750px;
   width: 90%;
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: 0 10px 30px rgba(0,0,0,0.15);
   border-top: 5px solid var(--primary-pink);
 }
-
 .modal-content h2 {
   color: var(--dark-pink);
   margin-bottom: 20px;
   font-size: 1.4rem;
 }
-
 .form-group { margin-bottom: 16px; }
-
 .form-group label {
   display: block;
   margin-bottom: 6px;
@@ -321,7 +281,6 @@ tr:hover { background-color: #fff8fa; }
   font-size: 0.88rem;
   color: var(--text-main);
 }
-
 .form-group input, .form-group select, .form-group textarea {
   width: 100%;
   padding: 10px 14px;
@@ -331,21 +290,42 @@ tr:hover { background-color: #fff8fa; }
   outline: none;
   transition: border-color 0.2s;
 }
-
 .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
   border-color: var(--primary-pink);
   box-shadow: 0 0 0 3px rgba(216, 27, 96, 0.1);
 }
-
 .form-row { display: flex; gap: 15px; }
 .form-row .form-group { flex: 1; }
-
 .action-btns {
   display: flex;
   gap: 6px;
   flex-wrap: wrap;
 }
-
+/* Toast Notification */
+#toast {
+  visibility: hidden;
+  min-width: 280px;
+  background-color: var(--dark-pink);
+  color: #fff;
+  text-align: center;
+  border-radius: 8px;
+  padding: 14px 20px;
+  position: fixed;
+  z-index: 2000;
+  right: 30px;
+  bottom: 30px;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: opacity 0.3s, visibility 0.3s;
+  opacity: 0;
+}
+#toast.show {
+  visibility: visible;
+  opacity: 1;
+}
+#toast.error {
+  background-color: var(--danger-color);
+}
 @media (max-width: 768px) {
   body { flex-direction: column; }
   .sidebar { width: 100%; }
@@ -354,7 +334,6 @@ tr:hover { background-color: #fff8fa; }
 </style>
 </head>
 <body>
-
 <div class="sidebar">
   <div class="sidebar-header">
     <h2>Daniele Sousa Santos</h2>
@@ -364,7 +343,7 @@ tr:hover { background-color: #fff8fa; }
     <li><button onclick="navigateTo('dashboard')" id="nav-dashboard" class="active">Dashboard</button></li>
     <li><button onclick="navigateTo('pacientes')" id="nav-pacientes">Pacientes</button></li>
     <li><button onclick="navigateTo('financeiro')" id="nav-financeiro">Financeiro Mensal</button></li>
-    <li><button onclick="navigateTo('faltas')" id="nav-faltas">📋 Relatório de Faltas</button></li>
+    <li><button onclick="navigateTo('faltas')" id="nav-faltas">Relatório de Faltas</button></li>
   </ul>
 </div>
 
@@ -400,7 +379,7 @@ tr:hover { background-color: #fff8fa; }
         <button class="btn-primary" onclick="openPatientModal()">+ Cadastrar Novo Paciente</button>
         <button class="btn-secondary" onclick="navigateTo('pacientes')">Ver Todos os Pacientes</button>
         <button class="btn-secondary" onclick="navigateTo('financeiro')">Ver Relatório Financeiro</button>
-        <button class="btn-secondary" onclick="navigateTo('faltas')">📋 Relatório de Faltas</button>
+        <button class="btn-secondary" onclick="navigateTo('faltas')">Relatório de Faltas</button>
       </div>
     </div>
   </div>
@@ -440,10 +419,36 @@ tr:hover { background-color: #fff8fa; }
           <h2 id="pront-patient-name" style="color: var(--dark-pink); font-size: 1.4rem;">Nome do Paciente</h2>
           <p id="pront-patient-details" style="color: var(--text-muted); margin-top: 5px; font-size: 0.9rem;"></p>
         </div>
-        <div style="display: flex; gap: 10px;">
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <button class="btn-secondary" onclick="openAnamneseModal()">Anamnese Inicial</button>
           <button class="btn-secondary" onclick="openMonthlySummaryModal()">Resumo Mensal</button>
           <button class="btn-primary" onclick="openSessionModal()">+ Registrar Sessão</button>
         </div>
+      </div>
+    </div>
+
+    <!-- DOCUMENTOS E PRONTUÁRIO -->
+    <h3 style="color: var(--dark-pink); margin-bottom: 15px; font-size: 1.1rem;">Área de Documentos & Prontuário</h3>
+    <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: var(--shadow-sm); margin-bottom: 25px;">
+      <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
+        <button class="btn-primary" onclick="openCustomDocumentModal()">+ Adicionar Novo Documento Customizado</button>
+        <button class="btn-pdf" onclick="openImportPDFModal()">Importar evoluções em PDF</button>
+        <button class="btn-secondary" onclick="openTemplatesModal()">Modelos/Templates</button>
+        <button class="btn-secondary" onclick="generatePsychologicalReportDraft()">Gerar Relatório Psicológico</button>
+        <button class="btn-pdf" onclick="exportFullProntuarioPDF()">Exportar Prontuário Completo</button>
+      </div>
+      <div class="table-container" style="margin-bottom: 0;">
+        <table>
+          <thead>
+            <tr>
+              <th>Data Criada</th>
+              <th>Título do Documento</th>
+              <th>Tipo</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="documents-table-body"></tbody>
+        </table>
       </div>
     </div>
 
@@ -557,7 +562,7 @@ tr:hover { background-color: #fff8fa; }
 
   <!-- RELATÓRIO DE FALTAS -->
   <div id="view-faltas" class="view-section">
-    <h3 style="color: var(--dark-pink); margin-bottom: 15px; font-size: 1.2rem;">📋 Relatório de Faltas</h3>
+    <h3 style="color: var(--dark-pink); margin-bottom: 15px; font-size: 1.2rem;">Relatório de Faltas</h3>
     <div class="filter-bar">
       <div class="form-group" style="margin-bottom:0;">
         <label style="font-size:0.85rem;">Tipo de Período:</label>
@@ -567,33 +572,27 @@ tr:hover { background-color: #fff8fa; }
           <option value="ano">Ano</option>
         </select>
       </div>
-
       <div id="group-fault-week" class="form-group" style="margin-bottom:0;">
         <label style="font-size:0.85rem;">Selecione a Semana:</label>
         <input type="week" id="fault-report-week" style="padding: 7px 12px; border: 1px solid var(--border-color); border-radius: 8px;">
       </div>
-
       <div id="group-fault-month" class="form-group" style="display:none; margin-bottom:0;">
         <label style="font-size:0.85rem;">Selecione o Mês:</label>
         <input type="month" id="fault-report-month" style="padding: 7px 12px; border: 1px solid var(--border-color); border-radius: 8px;">
       </div>
-
       <div id="group-fault-year" class="form-group" style="display:none; margin-bottom:0;">
         <label style="font-size:0.85rem;">Selecione o Ano:</label>
         <input type="number" id="fault-report-year" value="2026" style="padding: 7px 12px; border: 1px solid var(--border-color); border-radius: 8px; width: 100px;">
       </div>
-
       <div class="form-group" style="margin-bottom:0;">
         <label style="font-size:0.85rem;">Paciente (Opcional):</label>
         <select id="fault-report-patient" style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 8px;">
           <option value="">Todos os Pacientes</option>
         </select>
       </div>
-
       <button class="btn-primary" onclick="renderFaultsReport()" style="margin-top: 20px;">Gerar Relatório</button>
-      <button class="btn-pdf" onclick="downloadFaultsReportPDF()" style="margin-top: 20px;">📄 Gerar PDF do Relatório</button>
+      <button class="btn-pdf" onclick="downloadFaultsReportPDF()" style="margin-top: 20px;">Gerar PDF do Relatório</button>
     </div>
-
     <div class="table-container">
       <table>
         <thead>
@@ -623,16 +622,20 @@ tr:hover { background-color: #fff8fa; }
       </div>
       <div class="form-row">
         <div class="form-group">
+          <label>Idade *</label>
+          <input type="number" id="patient-age" min="0" max="120" required>
+        </div>
+        <div class="form-group">
           <label>Tipo de Atendimento *</label>
           <select id="patient-type" required onchange="toggleInfantFields()">
             <option value="Adulto">Adulto</option>
-            <option value="Infantil">Infantil</option>
+            <option value="Infantil">Infantil/Adolescente</option>
           </select>
         </div>
-        <div class="form-group">
-          <label>Telefone / WhatsApp *</label>
-          <input type="text" id="patient-phone" required>
-        </div>
+      </div>
+      <div class="form-group">
+        <label>Telefone / WhatsApp *</label>
+        <input type="text" id="patient-phone" required>
       </div>
       <div id="infant-fields" style="display: none; background: var(--light-pink); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
         <h4 style="color: var(--dark-pink); margin-bottom: 10px;">Dados do Responsável Legal</h4>
@@ -643,7 +646,11 @@ tr:hover { background-color: #fff8fa; }
         <div class="form-row">
           <div class="form-group">
             <label>Parentesco *</label>
-            <input type="text" id="patient-kinship" placeholder="Ex: Mãe, Pai">
+            <select id="patient-kinship">
+              <option value="Mãe">Mãe</option>
+              <option value="Pai">Pai</option>
+              <option value="Outro">Outro</option>
+            </select>
           </div>
           <div class="form-group">
             <label>Telefone do Responsável *</label>
@@ -656,6 +663,113 @@ tr:hover { background-color: #fff8fa; }
         <button type="submit" class="btn-primary">Salvar Paciente</button>
       </div>
     </form>
+  </div>
+</div>
+
+<!-- MODAL ANAMNESE EDITÁVEL COM TÓPICOS DINÂMICOS -->
+<div id="modal-anamnese" class="modal">
+  <div class="modal-content">
+    <h2>Anamnese Inicial Psicológica</h2>
+    <form id="form-anamnese" onsubmit="handleAnamneseSubmit(event)">
+      <input type="hidden" id="anamnese-id">
+      
+      <div id="anamnese-topics-container">
+        <!-- Tópicos dinâmicos editáveis serão gerados aqui -->
+      </div>
+
+      <button type="button" class="btn-secondary" onclick="addAnamneseTopic()" style="margin-bottom: 20px;">+ Adicionar Tópico/Seção</button>
+
+      <div class="form-group">
+        <label>Status do Documento</label>
+        <select id="anam-status">
+          <option value="rascunho">Rascunho</option>
+          <option value="finalizado">Finalizado</option>
+        </select>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; flex-wrap: wrap;">
+        <button type="button" class="btn-back" onclick="closeModal('modal-anamnese')">Voltar</button>
+        <button type="button" class="btn-pdf" onclick="generateAnamnesePDF()">Exportar PDF</button>
+        <button type="submit" class="btn-primary">Salvar Anamnese</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL NOVO DOCUMENTO CUSTOMIZADO -->
+<div id="modal-custom-doc" class="modal">
+  <div class="modal-content">
+    <h2 id="modal-doc-title">Elaborar Documento Clínico</h2>
+    <form id="form-custom-doc" onsubmit="handleCustomDocSubmit(event)">
+      <input type="hidden" id="custom-doc-id">
+      <div class="form-group">
+        <label>Título do Documento *</label>
+        <input type="text" id="doc-title" placeholder="Ex: Declaração de Acompanhamento" required>
+      </div>
+      <div class="form-group">
+        <label>Selecione um Modelo/Template (Opcional)</label>
+        <select id="doc-template-select" onchange="applyTemplateToDocument()">
+          <option value="">Sem modelo (Documento em Branco)</option>
+        </select>
+      </div>
+      <div id="doc-sections-container">
+        <!-- Seções dinâmicas -->
+      </div>
+      <button type="button" class="btn-secondary" onclick="addDocumentSection()" style="margin-bottom: 20px;">+ Adicionar Seção</button>
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <button type="button" class="btn-secondary" onclick="saveAsTemplateModal()">Salvar Estrutura como Modelo</button>
+        <div style="display: flex; gap: 10px;">
+          <button type="button" class="btn-back" onclick="closeModal('modal-custom-doc')">Voltar</button>
+          <button type="button" class="btn-pdf" onclick="exportCustomDocumentPDF()">Exportar PDF</button>
+          <button type="submit" class="btn-primary">Salvar Documento</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL IMPORTAR EVOLUÇÕES EM PDF -->
+<div id="modal-import-pdf" class="modal">
+  <div class="modal-content" style="max-width: 850px;">
+    <h2>Importar Evoluções em PDF</h2>
+    <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 15px;">
+      Selecione um ou mais arquivos PDF contendo evoluções do paciente. Os arquivos serão armazenados e o conteúdo será extraído para revisão antes do salvamento definitivo.
+    </p>
+    <div class="form-group">
+      <label>Selecione os Arquivos PDF *</label>
+      <input type="file" id="import-pdf-files" accept="application/pdf" multiple onchange="handleImportPDFFilesSelect(event)">
+    </div>
+    <div id="import-pdf-preview-container" style="display:none; margin-top: 20px;">
+      <h3 style="color: var(--dark-pink); font-size: 1.1rem; margin-bottom: 12px;">Evoluções Extraídas para Revisão</h3>
+      <div id="import-pdf-list" style="display: flex; flex-direction: column; gap: 15px; max-height: 400px; overflow-y: auto; padding-right: 5px;"></div>
+    </div>
+    <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 25px;">
+      <button type="button" class="btn-back" onclick="closeModal('modal-import-pdf')">Cancelar</button>
+      <button type="button" id="btn-confirm-import-pdf" class="btn-primary" onclick="confirmImportPDFEvolutions()" style="display:none;">Confirmar e Salvar Evoluções</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL MODELOS / TEMPLATES -->
+<div id="modal-templates" class="modal">
+  <div class="modal-content">
+    <h2>Modelos e Templates Salvos</h2>
+    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px;">Modelos armazenam apenas a estrutura e títulos das seções, sem dados de pacientes.</p>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Nome do Modelo</th>
+            <th>Qtd de Seções</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="templates-table-body"></tbody>
+      </table>
+    </div>
+    <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+      <button type="button" class="btn-back" onclick="closeModal('modal-templates')">Fechar</button>
+    </div>
   </div>
 </div>
 
@@ -692,7 +806,6 @@ tr:hover { background-color: #fff8fa; }
           <input type="number" step="0.01" id="session-value">
         </div>
       </div>
-
       <div class="form-group" id="group-session-payment">
         <label>Situação do Pagamento *</label>
         <select id="session-payment-status">
@@ -700,14 +813,12 @@ tr:hover { background-color: #fff8fa; }
           <option value="pendente">Pendente</option>
         </select>
       </div>
-
       <div class="form-group" id="group-session-fault-reason" style="display:none;">
         <label>Motivo da falta *</label>
         <textarea id="session-fault-reason" rows="3" placeholder="Informe o motivo do não comparecimento..."></textarea>
       </div>
-
       <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
-        <button type="button" class="btn-back" onclick="closeModal('modal-session')">Cancelar</button>
+        <button type="button" class="btn-back" onclick="closeModal('modal-session')">Voltar</button>
         <button type="submit" class="btn-primary">Salvar Sessão</button>
       </div>
     </form>
@@ -721,6 +832,10 @@ tr:hover { background-color: #fff8fa; }
     <form id="form-evolution" onsubmit="handleEvolutionSubmit(event)">
       <input type="hidden" id="evolution-id">
       <input type="hidden" id="evolution-session-id">
+      <div class="form-group">
+        <label>Objetivo</label>
+        <input type="text" id="evo-objective">
+      </div>
       <div class="form-group">
         <label>Queixa Principal / Relato</label>
         <textarea id="evo-complaint" rows="2"></textarea>
@@ -737,8 +852,16 @@ tr:hover { background-color: #fff8fa; }
         <label>Análise Técnica e Evolução</label>
         <textarea id="evo-analysis" rows="3"></textarea>
       </div>
+      <div class="form-group">
+        <label>Planejamento para Próxima Sessão</label>
+        <textarea id="evo-planning" rows="2"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Procedimentos Adotados</label>
+        <textarea id="evo-procedures" rows="2"></textarea>
+      </div>
       <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
-        <button type="button" class="btn-back" onclick="closeModal('modal-evolution')">Cancelar</button>
+        <button type="button" class="btn-back" onclick="closeModal('modal-evolution')">Voltar</button>
         <button type="submit" class="btn-primary">Salvar Evolução</button>
       </div>
     </form>
@@ -753,11 +876,11 @@ tr:hover { background-color: #fff8fa; }
       <input type="hidden" id="receipt-session-id">
       <div class="form-group">
         <label>Anexar Comprovante / Recibo (PDF ou Imagem)</label>
-        <input type="file" id="receipt-file" accept=".pdf,.jpg,.jpeg,.png">
+        <input type="file" id="receipt-file" accept=".pdf, .jpg, .jpeg, .png">
       </div>
       <div id="receipt-current-status" style="margin-bottom: 15px;"></div>
       <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
-        <button type="button" class="btn-back" onclick="closeModal('modal-receipt')">Cancelar</button>
+        <button type="button" class="btn-back" onclick="closeModal('modal-receipt')">Voltar</button>
         <button type="button" id="btn-remove-receipt" class="btn-danger" style="display:none;" onclick="removeReceipt()">Remover</button>
         <button type="submit" class="btn-primary">Salvar</button>
       </div>
@@ -782,7 +905,20 @@ tr:hover { background-color: #fff8fa; }
   </div>
 </div>
 
+<!-- TOAST FOR MESSAGES -->
+<div id="toast"></div>
+
 <script>
+/* TOAST NOTIFICATION */
+function showToast(message, isError = false) {
+  const toast = document.getElementById('toast');
+  toast.innerText = message;
+  toast.className = isError ? 'show error' : 'show';
+  setTimeout(() => {
+    toast.className = toast.className.replace('show', '');
+  }, 3500);
+}
+
 /* NAV & ESTADO GLOBAL */
 const navigationHistory = [];
 let currentPatientId = null;
@@ -838,7 +974,7 @@ function closeModal(id) { document.getElementById(id).classList.remove('active')
 
 /* DATABASE INDEXEDDB */
 let db;
-const request = indexedDB.open('PsicoGestaoRosaDB', 2);
+const request = indexedDB.open('PsicoGestaoRosaDB', 3);
 
 request.onupgradeneeded = function(e) {
   db = e.target.result;
@@ -855,6 +991,17 @@ request.onupgradeneeded = function(e) {
     evolucoesStore.createIndex('sessaold', 'sessaold', { unique: true });
     evolucoesStore.createIndex('pacienteld', 'pacienteld', { unique: false });
   }
+  if (!db.objectStoreNames.contains('anamneses')) {
+    const anamStore = db.createObjectStore('anamneses', { keyPath: 'id', autoIncrement: true });
+    anamStore.createIndex('pacienteld', 'pacienteld', { unique: true });
+  }
+  if (!db.objectStoreNames.contains('documentos')) {
+    const docStore = db.createObjectStore('documentos', { keyPath: 'id', autoIncrement: true });
+    docStore.createIndex('pacienteld', 'pacienteld', { unique: false });
+  }
+  if (!db.objectStoreNames.contains('modelos')) {
+    db.createObjectStore('modelos', { keyPath: 'id', autoIncrement: true });
+  }
 };
 
 request.onsuccess = function(e) {
@@ -867,34 +1014,38 @@ function dbTransaction(storeName, mode) {
 }
 
 function getAll(storeName) {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     const store = dbTransaction(storeName, 'readonly');
     const req = store.getAll();
     req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
   });
 }
 
 function getById(storeName, id) {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     const store = dbTransaction(storeName, 'readonly');
     const req = store.get(Number(id));
     req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
   });
 }
 
 function saveItem(storeName, item) {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     const store = dbTransaction(storeName, 'readwrite');
     const req = item.id ? store.put(item) : store.add(item);
     req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
   });
 }
 
 function deleteItem(storeName, id) {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     const store = dbTransaction(storeName, 'readwrite');
     const req = store.delete(Number(id));
     req.onsuccess = () => resolve(true);
+    req.onerror = () => reject(req.error);
   });
 }
 
@@ -923,17 +1074,15 @@ async function loadDashboardData() {
     else totalPending += val;
   });
 
-  document.getElementById('dash-month-revenue').innerText =
-    totalReceived.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-  document.getElementById('dash-month-pending').innerText =
-    totalPending.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  document.getElementById('dash-month-revenue').innerText = totalReceived.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  document.getElementById('dash-month-pending').innerText = totalPending.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
 
 /* PACIENTES LOGIC */
 function toggleInfantFields() {
   const type = document.getElementById('patient-type').value;
   const infantDiv = document.getElementById('infant-fields');
-  const reqs = infantDiv.querySelectorAll('input');
+  const reqs = infantDiv.querySelectorAll('input, select');
   if (type === 'Infantil') {
     infantDiv.style.display = 'block';
     reqs.forEach(r => r.required = true);
@@ -953,12 +1102,13 @@ function openPatientModal(patientId = null) {
     getById('pacientes', patientId).then(p => {
       document.getElementById('patient-id').value = p.id;
       document.getElementById('patient-name').value = p.nome || p.name || '';
+      document.getElementById('patient-age').value = p.idade || p.age || '';
       document.getElementById('patient-type').value = p.tipo || p.type || 'Adulto';
       document.getElementById('patient-phone').value = p.telefone || p.phone || '';
       toggleInfantFields();
       if ((p.tipo || p.type) === 'Infantil') {
         document.getElementById('patient-guardian').value = p.responsavel || p.guardian || '';
-        document.getElementById('patient-kinship').value = p.parentesco || p.kinship || '';
+        document.getElementById('patient-kinship').value = p.parentesco || p.kinship || 'Mãe';
         document.getElementById('patient-guardian-phone').value = p.telefoneResponsavel || p.guardianPhone || '';
       }
       document.getElementById('modal-patient-title').innerText = 'Editar Paciente';
@@ -976,6 +1126,7 @@ async function handlePatientSubmit(e) {
 
   const patientData = {
     nome: document.getElementById('patient-name').value,
+    idade: Number(document.getElementById('patient-age').value),
     tipo: type,
     telefone: document.getElementById('patient-phone').value,
     status: 'ativo'
@@ -993,13 +1144,16 @@ async function handlePatientSubmit(e) {
     patientData.telefoneResponsavel = document.getElementById('patient-guardian-phone').value;
   }
 
-  await saveItem('pacientes', patientData);
-  closeModal('modal-patient');
-
-  if (document.getElementById('view-pacientes').classList.contains('active')) renderPatientsList();
-  if (document.getElementById('view-prontuario').classList.contains('active')) loadProntuarioData(patientData.id);
-
-  loadDashboardData();
+  try {
+    await saveItem('pacientes', patientData);
+    showToast(id ? "Paciente atualizado com sucesso." : "Paciente salvo com sucesso.");
+    closeModal('modal-patient');
+    if (document.getElementById('view-pacientes').classList.contains('active')) renderPatientsList();
+    if (document.getElementById('view-prontuario').classList.contains('active')) loadProntuarioData(patientData.id);
+    loadDashboardData();
+  } catch (err) {
+    showToast("Não foi possível salvar. Tente novamente.", true);
+  }
 }
 
 async function togglePatientStatus(id, newStatus) {
@@ -1031,9 +1185,8 @@ async function renderPatientsList() {
     const pName = p.nome || p.name || '';
     const pType = p.tipo || p.type || '';
     const pPhone = p.telefone || p.phone || '';
-
     tr.innerHTML = `
-      <td><strong>${pName}</strong></td>
+      <td><strong>${pName}</strong> ${p.idade ? `(${p.idade} anos)` : ''}</td>
       <td>${pType}</td>
       <td>${pPhone}</td>
       <td><span class="badge ${p.status === 'ativo' ? 'badge-active' : 'badge-inactive'}">${p.status.toUpperCase()}</span></td>
@@ -1064,6 +1217,7 @@ async function loadProntuarioData(patientId, monthFilter = null) {
 
   document.getElementById('pront-patient-name').innerText = `${pName} (${pType})`;
   let details = `Tel: ${pPhone}`;
+  if (patient.idade) details += ` | Idade: ${patient.idade} anos`;
   if (pType === 'Infantil') {
     const pResp = patient.responsavel || patient.guardian || '';
     const pKin = patient.parentesco || patient.kinship || '';
@@ -1076,11 +1230,9 @@ async function loadProntuarioData(patientId, monthFilter = null) {
   const allEvolutions = await getAll('evolucoes');
 
   let patientSessions = allSessions.filter(s => Number(s.pacienteld || s.patientId) === Number(patientId));
-
   if (monthFilter) {
     patientSessions = patientSessions.filter(s => (s.dataHora || s.datetime || '').startsWith(monthFilter));
   }
-
   patientSessions.sort((a, b) => new Date(b.dataHora || b.datetime) - new Date(a.dataHora || a.datetime));
 
   const tbody = document.getElementById('prontuario-table-body');
@@ -1099,7 +1251,7 @@ async function loadProntuarioData(patientId, monthFilter = null) {
     let evoCol = '';
     if (isFalta) {
       evoCol = `<strong>FALTA REGISTRADA</strong><br><span style="font-size:0.85rem; color:var(--text-muted);">Motivo: ${s.motivoFalta || 'Não informado'}</span><br>
-        <button class="btn-pdf" style="margin-top:4px;" onclick="generateFaultPDF(${s.id})">📄 Gerar registro de falta em PDF</button>`;
+      <button class="btn-pdf" style="margin-top:4px;" onclick="generateFaultPDF(${s.id})">Gerar registro de falta em PDF</button>`;
     } else {
       evoCol = evo
         ? `<button class="btn-secondary" onclick="openEvolutionModal(${s.id}, ${evo.id})">Editar Evolução</button>
@@ -1131,6 +1283,7 @@ async function loadProntuarioData(patientId, monthFilter = null) {
   });
 
   renderPatientFaultsHistory();
+  renderPatientDocumentsList();
 }
 
 function filterPatientHistory() {
@@ -1158,7 +1311,6 @@ async function renderPatientFaultsHistory() {
     const dateObj = new Date(dtStr);
     const m = String(dateObj.getMonth() + 1).padStart(2, '0');
     const y = String(dateObj.getFullYear());
-
     const matchesMonth = monthFilter ? m === monthFilter : true;
     const matchesYear = yearFilter ? y === yearFilter : true;
     return matchesMonth && matchesYear;
@@ -1195,574 +1347,655 @@ async function renderPatientFaultsHistory() {
   });
 }
 
-/* APAGAR SESSÃO / EVOLUÇÃO */
-async function deleteSession(sessionId) {
-  if (confirm("Tem certeza que deseja excluir esta sessão e todo seu registro de evolução?")) {
-    const evolutions = await getAll('evolucoes');
-    const evo = evolutions.find(e => Number(e.sessaold) === Number(sessionId));
-    if (evo) await deleteItem('evolucoes', evo.id);
-    await deleteItem('sessoes', sessionId);
-    loadProntuarioData(currentPatientId);
-    loadDashboardData();
-  }
+/* ANAMNESE EDITÁVEL POR PACIENTE */
+function addAnamneseTopic(title = '', content = '') {
+  const container = document.getElementById('anamnese-topics-container');
+  const div = document.createElement('div');
+  div.className = 'card anamnese-topic-item';
+  div.style.marginBottom = '15px';
+  div.innerHTML = `
+    <div class="form-group">
+      <label>Título do Tópico / Seção</label>
+      <input type="text" class="topic-title" value="${title}" placeholder="Ex: Queixa Principal, Histórico Familiar..." required>
+    </div>
+    <div class="form-group">
+      <label>Conteúdo</label>
+      <textarea class="topic-content" rows="3" placeholder="Digite o conteúdo...">${content}</textarea>
+    </div>
+    <button type="button" class="btn-danger" onclick="this.parentElement.remove()">Remover Tópico</button>
+  `;
+  container.appendChild(div);
 }
 
-/* GERAÇÃO DE PDF DA SESSÃO COM TEXTO JUSTIFICADO */
-async function generatePDF(sessionId) {
-  const session = await getById('sessoes', sessionId);
-  if (!session) return;
-  const patient = await getById('pacientes', session.pacienteld || session.patientId);
-  const evolutions = await getAll('evolucoes');
-  const evo = evolutions.find(e => Number(e.sessaold) === Number(sessionId));
+async function openAnamneseModal() {
+  if (!currentPatientId) return;
+  document.getElementById('form-anamnese').reset();
+  document.getElementById('anamnese-id').value = '';
+  const container = document.getElementById('anamnese-topics-container');
+  container.innerHTML = '';
 
-  if (!evo) {
-    alert('Evolução clínica não encontrada.');
-    return;
-  }
+  const anamneses = await getAll('anamneses');
+  const anam = anamneses.find(a => Number(a.pacienteld) === Number(currentPatientId));
 
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF('p', 'mm', 'a4');
+  if (anam) {
+    document.getElementById('anamnese-id').value = anam.id;
+    document.getElementById('anam-status').value = anam.status || 'rascunho';
 
-  const pName = patient.nome || patient.name || '';
-  const pType = patient.tipo || patient.type || '';
-  const pPhone = patient.telefone || patient.phone || '';
-  const pGuardian = patient.responsavel || patient.guardian || '';
-  const pKinship = patient.parentesco || patient.kinship || 'Resp.';
-  const pGuardianPhone = patient.telefoneResponsavel || patient.guardianPhone || 'N/A';
-
-  const dtStr = session.dataHora || session.datetime;
-  const dateFormatted = new Date(dtStr).toLocaleString('pt-BR');
-  const mode = session.modalidade || session.mode || '';
-  const status = session.status || '';
-
-  const complaint = evo.queixa || evo.complaint || '';
-  const demand = evo.demanda || evo.demand || '';
-  const description = evo.descricao || evo.description || '';
-  const analysis = evo.analise || evo.analysis || '';
-
-  const pageHeight = 297;
-  const margin = 20;
-  const contentWidth = 170;
-  let currentY = 20;
-
-  function checkPageBreak(heightNeeded) {
-    if (currentY + heightNeeded > pageHeight - margin) {
-      doc.addPage();
-      currentY = margin;
-      return true;
+    if (anam.topicos && anam.topicos.length > 0) {
+      anam.topicos.forEach(t => addAnamneseTopic(t.titulo, t.conteudo));
+    } else {
+      // Migração de estrutura legada caso exista dados anteriores
+      if (anam.queixa) addAnamneseTopic("Queixa Principal e Histórico de Sintomas", anam.queixa);
+      if (anam.historicoFamiliar) addAnamneseTopic("Histórico Familiar e Social", anam.historicoFamiliar);
+      if (anam.historicoMedico) addAnamneseTopic("Histórico Médico e Tratamentos Anteriores", anam.historicoMedico);
+      if (anam.observacoes) addAnamneseTopic("Observações e Hipóteses Clínicas", anam.observacoes);
     }
-    return false;
-  }
-
-  // Cabeçalho
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(16);
-  doc.setTextColor(136, 14, 79);
-  doc.text("Daniele Sousa Santos", 105, currentY, { align: "center" });
-  currentY += 6;
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(10);
-  doc.setTextColor(120, 144, 156);
-  doc.text("Psicóloga - CRP: 22/07398", 105, currentY, { align: "center" });
-  currentY += 8;
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(12);
-  doc.setTextColor(216, 27, 96);
-  doc.text("RELATÓRIO DE EVOLUÇÃO PSICOLÓGICA", 105, currentY, { align: "center" });
-  currentY += 4;
-  doc.setDrawColor(216, 27, 96);
-  doc.setLineWidth(0.5);
-  doc.line(margin, currentY, 210 - margin, currentY);
-  currentY += 8;
-
-  // Box Identificação do Paciente
-  doc.setFillColor(255, 245, 248);
-  doc.setDrawColor(244, 143, 177);
-  let boxHeight = pType === 'Infantil' && pGuardian ? 34 : 26;
-  doc.roundedRect(margin, currentY, contentWidth, boxHeight, 2, 2, 'FD');
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(10);
-  doc.setTextColor(136, 14, 79);
-  doc.text("IDENTIFICAÇÃO DO PACIENTE", margin + 5, currentY + 6);
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(9.5);
-  doc.setTextColor(55, 71, 79);
-  doc.text(`Nome: ${pName}`, margin + 5, currentY + 12);
-  doc.text(`Contato: ${pPhone}`, margin + 5, currentY + 17);
-  doc.text(`Tipo: ${pType}`, margin + 5, currentY + 22);
-  if (pType === 'Infantil' && pGuardian) {
-    doc.text(`Responsável Legal: ${pGuardian} (${pKinship}) Tel: ${pGuardianPhone}`, margin + 5, currentY + 27);
-  }
-  currentY += boxHeight + 6;
-
-  // Box Dados da Sessão
-  doc.setFillColor(255, 245, 248);
-  doc.setDrawColor(244, 143, 177);
-  doc.roundedRect(margin, currentY, contentWidth, 26, 2, 2, 'FD');
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(10);
-  doc.setTextColor(136, 14, 79);
-  doc.text("DADOS DA SESSÃO", margin + 5, currentY + 6);
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(9.5);
-  doc.setTextColor(55, 71, 79);
-  doc.text(`Data/Hora: ${dateFormatted}`, margin + 5, currentY + 12);
-  doc.text(`Modalidade: ${mode}`, margin + 5, currentY + 17);
-  doc.text(`Status: ${status.toUpperCase()}`, margin + 5, currentY + 22);
-  currentY += 32;
-
-  // Título da Seção Clínica
-  checkPageBreak(15);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(11);
-  doc.setTextColor(136, 14, 79);
-  doc.text("REGISTRO CLÍNICO DA EVOLUÇÃO", margin, currentY);
-  currentY += 2;
-  doc.setDrawColor(216, 27, 96);
-  doc.setLineWidth(0.3);
-  doc.line(margin, currentY, 210 - margin, currentY);
-  currentY += 8;
-
-  // Função auxiliar para adicionar seções com TEXTO JUSTIFICADO
-  function addClinicalSection(title, text) {
-    if (!text || !text.trim()) return;
-    checkPageBreak(12);
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(9.5);
-    doc.setTextColor(216, 27, 96);
-    doc.text(title, margin, currentY);
-    currentY += 5;
-
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(9);
-    doc.setTextColor(55, 71, 79);
-
-    const lines = doc.splitTextToSize(text, contentWidth);
-    lines.forEach((line) => {
-      checkPageBreak(5);
-      // Garantido o alinhamento justificado no PDF
-      doc.text(line, margin, currentY, { align: "justify", maxWidth: contentWidth });
-      currentY += 4.5;
-    });
-    currentY += 4;
-  }
-
-  addClinicalSection("1. Queixa Principal / Relato:", complaint);
-  addClinicalSection("2. Demanda Trabalhada:", demand);
-  addClinicalSection("3. Descrição Detalhada da Sessão:", description);
-  addClinicalSection("4. Análise Técnica e Evolução:", analysis);
-
-  // Assinatura
-  checkPageBreak(30);
-  currentY += 15;
-  doc.setDrawColor(55, 71, 79);
-  doc.setLineWidth(0.3);
-  doc.line(70, currentY, 140, currentY);
-  currentY += 5;
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(9.5);
-  doc.setTextColor(55, 71, 79);
-  doc.text("Daniele Sousa Santos", 105, currentY, { align: "center" });
-  currentY += 4;
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(8.5);
-  doc.setTextColor(120, 144, 156);
-  doc.text("Psicóloga - CRP: 22/07398", 105, currentY, { align: "center" });
-
-  const dateFileStr = (session.dataHora || session.datetime || '').substring(0, 10);
-  const fileName = `Evolucao_${pName.replace(/\s+/g, '_')}_${dateFileStr}.pdf`;
-  doc.save(fileName);
-}
-
-function generateSessionPDF(sessionId) {
-  generatePDF(sessionId);
-}
-
-/* GERAR PDF INDIVIDUAL DE FALTA */
-async function generateFaultPDF(sessionId) {
-  const session = await getById('sessoes', sessionId);
-  if (!session) return;
-  const patient = await getById('pacientes', session.pacienteld || session.patientId);
-
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF('p', 'mm', 'a4');
-
-  const pName = patient ? (patient.nome || patient.name) : 'Paciente Não Encontrado';
-  const dtStr = session.dataHora || session.datetime;
-  const dt = new Date(dtStr);
-  const dateStr = dt.toLocaleDateString('pt-BR');
-  const timeStr = dt.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-  const mode = session.modalidade || session.mode || '';
-  const reason = session.motivoFalta || 'Motivo não informado.';
-
-  let currentY = 25;
-
-  // Cabeçalho
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(16);
-  doc.setTextColor(136, 14, 79);
-  doc.text("REGISTRO DE FALTA", 105, currentY, { align: "center" });
-  currentY += 10;
-
-  doc.setFontSize(11);
-  doc.setTextColor(55, 71, 79);
-  doc.text("Dados da psicóloga", 20, currentY);
-  currentY += 6;
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(10);
-  doc.text("Daniele Sousa Santos", 20, currentY);
-  currentY += 5;
-  doc.text("Psicóloga", 20, currentY);
-  currentY += 5;
-  doc.text("CRP 22/07398", 20, currentY);
-  currentY += 10;
-
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(11);
-  doc.text("Dados do paciente", 20, currentY);
-  currentY += 6;
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(10);
-  doc.text(`Nome completo: ${pName}`, 20, currentY);
-  currentY += 5;
-  doc.text(`Data da falta: ${dateStr}`, 20, currentY);
-  currentY += 5;
-  doc.text(`Horário agendado: ${timeStr}`, 20, currentY);
-  currentY += 5;
-  doc.text(`Modalidade: ${mode}`, 20, currentY);
-  currentY += 10;
-
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(11);
-  doc.text("Motivo da falta", 20, currentY);
-  currentY += 6;
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(10);
-
-  const lines = doc.splitTextToSize(reason, 170);
-  lines.forEach((line) => {
-    doc.text(line, 20, currentY, { align: "justify", maxWidth: 170 });
-    currentY += 5;
-  });
-  currentY += 5;
-
-  doc.setFont("helvetica", "bold");
-  doc.text("Status: Falta", 20, currentY);
-
-  // Assinatura
-  currentY += 35;
-  doc.setDrawColor(55, 71, 79);
-  doc.setLineWidth(0.3);
-  doc.line(70, currentY, 140, currentY);
-  currentY += 5;
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(9.5);
-  doc.setTextColor(55, 71, 79);
-  doc.text("Daniele Sousa Santos", 105, currentY, { align: "center" });
-  currentY += 4;
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(8.5);
-  doc.setTextColor(120, 144, 156);
-  doc.text("Psicóloga - CRP: 22/07398", 105, currentY, { align: "center" });
-
-  const fileName = `Registro_Falta_${pName.replace(/\s+/g, '_')}_${dateStr.replace(/\//g, '-')}.pdf`;
-  doc.save(fileName);
-}
-
-/* FINANCEIRO MENSAL */
-function initFinanceView() {
-  const now = new Date();
-  const currentMonthStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
-  document.getElementById('finance-month-select').value = currentMonthStr;
-  renderFinancialReport();
-}
-
-async function renderFinancialReport() {
-  const selectedMonth = document.getElementById('finance-month-select').value;
-  if (!selectedMonth) return;
-
-  const sessions = await getAll('sessoes');
-  const patients = await getAll('pacientes');
-
-  // Ignorar faltas no financeiro
-  const monthSessions = sessions.filter(s => (s.dataHora || s.datetime || '').startsWith(selectedMonth) && s.status !== 'falta');
-
-  let totalGross = 0;
-  let totalReceived = 0;
-  let totalPending = 0;
-
-  const tbody = document.getElementById('finance-table-body');
-  tbody.innerHTML = '';
-
-  monthSessions.forEach(s => {
-    const patient = patients.find(p => Number(p.id) === Number(s.pacienteld || s.patientId));
-    const val = parseFloat(s.valor || s.value) || 0;
-    totalGross += val;
-    const isPaid = (s.pagamentoStatus || s.paymentStatus) === 'pago';
-    if (isPaid) totalReceived += val;
-    else totalPending += val;
-
-    const dtStr = s.dataHora || s.datetime;
-    const dt = new Date(dtStr).toLocaleString('pt-BR');
-    const pName = patient ? (patient.nome || patient.name) : 'Paciente Não Encontrado';
-    const sStatus = s.status || '';
-    const pStatus = s.pagamentoStatus || s.paymentStatus || 'pendente';
-
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${dt}</td>
-      <td><strong>${pName}</strong></td>
-      <td>${val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
-      <td>${sStatus.toUpperCase()}</td>
-      <td><span class="badge ${pStatus === 'pago' ? 'badge-paid' : 'badge-pending'}">${pStatus.toUpperCase()}</span></td>
-      <td>
-        <button class="btn-secondary" onclick="togglePaymentStatusFromFinance(${s.id})">
-          Alternar para ${pStatus === 'pago' ? 'Pendente' : 'Pago'}
-        </button>
-      </td>`;
-    tbody.appendChild(tr);
-  });
-
-  document.getElementById('fin-total-gross').innerText = totalGross.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-  document.getElementById('fin-total-received').innerText = totalReceived.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-  document.getElementById('fin-total-pending').innerText = totalPending.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-
-  const adimplenceRate = totalGross > 0 ? Math.round((totalReceived / totalGross) * 100) : 0;
-  document.getElementById('fin-adimplence').innerText = `${adimplenceRate}%`;
-}
-
-async function togglePaymentStatusFromFinance(sessionId) {
-  const session = await getById('sessoes', sessionId);
-  if (!session) return;
-  const currentP = session.pagamentoStatus || session.paymentStatus;
-  const newP = currentP === 'pago' ? 'pendente' : 'pago';
-  session.pagamentoStatus = newP;
-  session.paymentStatus = newP;
-  await saveItem('sessoes', session);
-  renderFinancialReport();
-  loadDashboardData();
-}
-
-/* RELATÓRIO DE FALTAS LOGIC */
-async function initFaultsView() {
-  const patients = await getAll('pacientes');
-  const select = document.getElementById('fault-report-patient');
-  select.innerHTML = '<option value="">Todos os Pacientes</option>';
-  patients.forEach(p => {
-    select.innerHTML += `<option value="${p.id}">${p.nome || p.name}</option>`;
-  });
-
-  // Definir semana atual
-  const now = new Date();
-  const year = now.getFullYear();
-  const firstDay = new Date(year, 0, 1);
-  const weekNum = Math.ceil((((now - firstDay) / 86400000) + firstDay.getDay() + 1) / 7);
-  document.getElementById('fault-report-week').value = `${year}-W${String(weekNum).padStart(2, '0')}`;
-  document.getElementById('fault-report-month').value = `${year}-${String(now.getMonth() + 1).padStart(2, '0')}`;
-  document.getElementById('fault-report-year').value = year;
-
-  renderFaultsReport();
-}
-
-function toggleFaultPeriodInputs() {
-  const type = document.getElementById('fault-report-period-type').value;
-  document.getElementById('group-fault-week').style.display = type === 'semana' ? 'block' : 'none';
-  document.getElementById('group-fault-month').style.display = type === 'mes' ? 'block' : 'none';
-  document.getElementById('group-fault-year').style.display = type === 'ano' ? 'block' : 'none';
-}
-
-async function getFilteredFaults() {
-  const periodType = document.getElementById('fault-report-period-type').value;
-  const patientId = document.getElementById('fault-report-patient').value;
-
-  const allSessions = await getAll('sessoes');
-  let faults = allSessions.filter(s => s.status === 'falta');
-
-  if (patientId) {
-    faults = faults.filter(s => Number(s.pacienteld || s.patientId) === Number(patientId));
-  }
-
-  if (periodType === 'semana') {
-    const weekVal = document.getElementById('fault-report-week').value; // EX: 2026-W37
-    if (weekVal) {
-      const [y, w] = weekVal.split('-W');
-      faults = faults.filter(s => {
-        const dt = new Date(s.dataHora || s.datetime);
-        const year = dt.getFullYear();
-        const firstDay = new Date(year, 0, 1);
-        const weekNum = Math.ceil((((dt - firstDay) / 86400000) + firstDay.getDay() + 1) / 7);
-        return String(year) === y && String(weekNum).padStart(2, '0') === w;
-      });
-    }
-  } else if (periodType === 'mes') {
-    const monthVal = document.getElementById('fault-report-month').value; // EX: 2026-09
-    if (monthVal) {
-      faults = faults.filter(s => (s.dataHora || s.datetime || '').startsWith(monthVal));
-    }
-  } else if (periodType === 'ano') {
-    const yearVal = document.getElementById('fault-report-year').value; // EX: 2026
-    if (yearVal) {
-      faults = faults.filter(s => (s.dataHora || s.datetime || '').startsWith(yearVal));
-    }
-  }
-
-  faults.sort((a, b) => new Date(a.dataHora || a.datetime) - new Date(b.dataHora || b.datetime));
-  return faults;
-}
-
-async function renderFaultsReport() {
-  const faults = await getFilteredFaults();
-  const patients = await getAll('pacientes');
-  const tbody = document.getElementById('faults-report-table-body');
-  tbody.innerHTML = '';
-
-  if (faults.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color: var(--text-muted);">Nenhuma falta encontrada para este filtro.</td></tr>';
-    return;
-  }
-
-  faults.forEach(f => {
-    const patient = patients.find(p => Number(p.id) === Number(f.pacienteld || f.patientId));
-    const pName = patient ? (patient.nome || patient.name) : 'Paciente Não Encontrado';
-    const dt = new Date(f.dataHora || f.datetime);
-    const dateStr = dt.toLocaleDateString('pt-BR');
-    const timeStr = dt.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-    const mode = f.modalidade || f.mode || '-';
-    const reason = f.motivoFalta || 'Não informado';
-
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${dateStr}</td>
-      <td>${timeStr}</td>
-      <td><strong>${pName}</strong></td>
-      <td>${mode}</td>
-      <td>${reason}</td>`;
-    tbody.appendChild(tr);
-  });
-}
-
-async function downloadFaultsReportPDF() {
-  const faults = await getFilteredFaults();
-  const patients = await getAll('pacientes');
-  const periodType = document.getElementById('fault-report-period-type').value;
-
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF('p', 'mm', 'a4');
-
-  let currentY = 20;
-
-  // Cabeçalho
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(14);
-  doc.setTextColor(136, 14, 79);
-  doc.text(`RELATÓRIO ${periodType.toUpperCase()} DE FALTAS`, 105, currentY, { align: "center" });
-  currentY += 8;
-
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(9.5);
-  doc.setTextColor(55, 71, 79);
-  doc.text("Psicóloga: Daniele Sousa Santos", 20, currentY);
-  currentY += 5;
-  doc.text("CRP: 22/07398", 20, currentY);
-  currentY += 8;
-
-  doc.setDrawColor(216, 27, 96);
-  doc.setLineWidth(0.4);
-  doc.line(20, currentY, 190, currentY);
-  currentY += 10;
-
-  if (faults.length === 0) {
-    doc.text("Nenhuma falta registrada no período.", 20, currentY);
   } else {
-    faults.forEach(f => {
-      const patient = patients.find(p => Number(p.id) === Number(f.pacienteld || f.patientId));
-      const pName = patient ? (patient.nome || patient.name) : 'Paciente Desconhecido';
-      const dt = new Date(f.dataHora || f.datetime);
-      const dateStr = dt.toLocaleDateString('pt-BR');
-      const timeStr = dt.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-      const mode = f.modalidade || f.mode || '-';
-      const reason = f.motivoFalta || 'Não informado.';
+    // Estrutura Padrão Inicial de Tópicos
+    addAnamneseTopic("1. Queixa Principal e Histórico de Sintomas", "");
+    addAnamneseTopic("2. Histórico Familiar e Social", "");
+    addAnamneseTopic("3. Histórico Médico e Tratamentos Anteriores", "");
+    addAnamneseTopic("4. Observações e Hipóteses Clínicas", "");
+  }
 
-      if (currentY > 260) {
-        doc.addPage();
-        currentY = 20;
-      }
+  openModal('modal-anamnese');
+}
 
+async function handleAnamneseSubmit(e) {
+  e.preventDefault();
+  if (!currentPatientId) return;
+
+  const id = document.getElementById('anamnese-id').value;
+  const topicos = [];
+
+  document.querySelectorAll('.anamnese-topic-item').forEach(el => {
+    topicos.push({
+      titulo: el.querySelector('.topic-title').value,
+      conteudo: el.querySelector('.topic-content').value
+    });
+  });
+
+  const data = {
+    pacienteld: Number(currentPatientId),
+    topicos: topicos,
+    status: document.getElementById('anam-status').value,
+    dataAtualizacao: new Date().toISOString()
+  };
+
+  if (id) data.id = Number(id);
+
+  try {
+    await saveItem('anamneses', data);
+    showToast("Anamnese salva com sucesso.");
+    closeModal('modal-anamnese');
+    renderPatientDocumentsList();
+  } catch (err) {
+    showToast("Não foi possível salvar a Anamnese. Tente novamente.", true);
+  }
+}
+
+async function generateAnamnesePDF() {
+  if (!currentPatientId) return;
+  const patient = await getById('pacientes', currentPatientId);
+  const anamneses = await getAll('anamneses');
+  const anam = anamneses.find(a => Number(a.pacienteld) === Number(currentPatientId));
+
+  if (!patient || !anam) {
+    alert("Preencha e salve a Anamnese antes de exportar.");
+    return;
+  }
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF('p', 'mm', 'a4');
+  let currentY = 20;
+
+  doc.setFont("helvetica", "bold"); doc.setFontSize(15); doc.setTextColor(136, 14, 79);
+  doc.text("ANAMNESE INICIAL PSICOLÓGICA", 105, currentY, { align: "center" });
+  currentY += 8;
+
+  doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(55, 71, 79);
+  doc.text("Daniele Sousa Santos - CRP 22/07398", 105, currentY, { align: "center" });
+  currentY += 10;
+
+  doc.setDrawColor(216, 27, 96); doc.line(20, currentY, 190, currentY);
+  currentY += 10;
+
+  doc.setFont("helvetica", "bold"); doc.text("Identificação do Paciente", 20, currentY);
+  currentY += 6;
+
+  doc.setFont("helvetica", "normal");
+  doc.text(`Nome: ${patient.nome || ''}`, 20, currentY); currentY += 5;
+  if (patient.idade) { doc.text(`Idade: ${patient.idade} anos`, 20, currentY); currentY += 5; }
+  doc.text(`Tipo: ${patient.tipo || ''}`, 20, currentY); currentY += 8;
+
+  const listTopicos = anam.topicos || [
+    { titulo: "1. Queixa Principal e Histórico de Sintomas", conteudo: anam.queixa },
+    { titulo: "2. Histórico Familiar e Social", conteudo: anam.historicoFamiliar },
+    { titulo: "3. Histórico Médico e Tratamentos Anteriores", conteudo: anam.historicoMedico },
+    { titulo: "4. Observações e Hipóteses Clínicas", conteudo: anam.observacoes }
+  ];
+
+  listTopicos.forEach(topic => {
+    if (!topic.conteudo && !topic.titulo) return;
+    if (currentY > 250) { doc.addPage(); currentY = 20; }
+    
+    if (topic.titulo) {
       doc.setFont("helvetica", "bold");
-      doc.text(`Paciente: ${pName}`, 20, currentY);
-      currentY += 5;
+      doc.text(topic.titulo, 20, currentY);
+      currentY += 6;
+    }
+    
+    if (topic.conteudo) {
       doc.setFont("helvetica", "normal");
-      doc.text(`Data: ${dateStr}   Horário: ${timeStr}   Modalidade: ${mode}`, 20, currentY);
-      currentY += 5;
-
-      const lines = doc.splitTextToSize(`Motivo: ${reason}`, 170);
+      const lines = doc.splitTextToSize(topic.conteudo, 170);
       lines.forEach(line => {
+        if (currentY > 270) { doc.addPage(); currentY = 20; }
+        doc.text(line, 20, currentY, { align: "justify", maxWidth: 170 });
+        currentY += 5;
+      });
+      currentY += 3;
+    }
+  });
+
+  if (currentY > 240) { doc.addPage(); currentY = 30; } else { currentY += 15; }
+  doc.line(70, currentY, 140, currentY); currentY += 5;
+  doc.setFont("helvetica", "bold"); doc.text("Daniele Sousa Santos", 105, currentY, { align: "center" }); currentY += 4;
+  doc.setFont("helvetica", "normal"); doc.text("CRP 22/07398", 105, currentY, { align: "center" });
+
+  const pageCount = doc.internal.getNumberOfPages();
+  for (let i = 1; i <= pageCount; i++) {
+    doc.setPage(i);
+    doc.setFontSize(8); doc.setTextColor(150);
+    doc.text(`Página ${i} de ${pageCount}`, 105, 290, { align: "center" });
+  }
+
+  const dateStr = new Date().toISOString().substring(0, 10);
+  doc.save(`Anamnese_Inicial_${(patient.nome || '').replace(/\s+/g, '_')}_${dateStr}.pdf`);
+}
+
+/* ÁREA DE DOCUMENTOS CUSTOMIZADOS */
+function addDocumentSection(title = '', content = '') {
+  const container = document.getElementById('doc-sections-container');
+  const div = document.createElement('div');
+  div.className = 'card doc-section-item';
+  div.style.marginBottom = '15px';
+  div.innerHTML = `
+    <div class="form-group">
+      <label>Título da Seção / Tópico</label>
+      <input type="text" class="sec-title" value="${title}" placeholder="Ex: Procedimentos Realizados">
+    </div>
+    <div class="form-group">
+      <label>Conteúdo da Seção</label>
+      <textarea class="sec-content" rows="3" placeholder="Digite o conteúdo...">${content}</textarea>
+    </div>
+    <button type="button" class="btn-danger" onclick="this.parentElement.remove()">Remover Seção</button>
+  `;
+  container.appendChild(div);
+}
+
+async function openCustomDocumentModal(docId = null) {
+  if (!currentPatientId) return;
+  document.getElementById('form-custom-doc').reset();
+  document.getElementById('custom-doc-id').value = '';
+  document.getElementById('doc-sections-container').innerHTML = '';
+
+  await loadTemplatesDropdown();
+
+  if (docId) {
+    const docItem = await getById('documentos', docId);
+    if (docItem) {
+      document.getElementById('custom-doc-id').value = docItem.id;
+      document.getElementById('doc-title').value = docItem.titulo || '';
+      if (docItem.secoes && docItem.secoes.length > 0) {
+        docItem.secoes.forEach(s => addDocumentSection(s.titulo, s.conteudo));
+      }
+    }
+  } else {
+    addDocumentSection('1. Identificação', '');
+    addDocumentSection('2. Descrição Clínica', '');
+  }
+  openModal('modal-custom-doc');
+}
+
+async function loadTemplatesDropdown() {
+  const select = document.getElementById('doc-template-select');
+  select.innerHTML = '<option value="">Sem modelo (Documento em Branco)</option>';
+  const templates = await getAll('modelos');
+  templates.forEach(t => {
+    select.innerHTML += `<option value="${t.id}">${t.nomeModelo}</option>`;
+  });
+}
+
+async function applyTemplateToDocument() {
+  const templateId = document.getElementById('doc-template-select').value;
+  if (!templateId) return;
+  const tmpl = await getById('modelos', templateId);
+  if (tmpl && tmpl.secoes) {
+    document.getElementById('doc-sections-container').innerHTML = '';
+    tmpl.secoes.forEach(s => addDocumentSection(s.titulo, ''));
+  }
+}
+
+async function handleCustomDocSubmit(e) {
+  e.preventDefault();
+  if (!currentPatientId) return;
+
+  const id = document.getElementById('custom-doc-id').value;
+  const sections = [];
+
+  document.querySelectorAll('.doc-section-item').forEach(el => {
+    sections.push({
+      titulo: el.querySelector('.sec-title').value,
+      conteudo: el.querySelector('.sec-content').value
+    });
+  });
+
+  const docData = {
+    pacienteld: Number(currentPatientId),
+    titulo: document.getElementById('doc-title').value,
+    tipo: 'Documento Clínico',
+    secoes: sections,
+    dataCriacao: new Date().toISOString()
+  };
+
+  if (id) docData.id = Number(id);
+
+  try {
+    await saveItem('documentos', docData);
+    showToast("Documento salvo com sucesso.");
+    closeModal('modal-custom-doc');
+    renderPatientDocumentsList();
+  } catch (err) {
+    showToast("Não foi possível salvar. Tente novamente.", true);
+  }
+}
+
+async function exportCustomDocumentPDF() {
+  if (!currentPatientId) return;
+  const patient = await getById('pacientes', currentPatientId);
+  const title = document.getElementById('doc-title').value || 'Documento Clínico';
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF('p', 'mm', 'a4');
+  let currentY = 20;
+
+  doc.setFont("helvetica", "bold"); doc.setFontSize(14); doc.setTextColor(136, 14, 79);
+  doc.text(title.toUpperCase(), 105, currentY, { align: "center" });
+  currentY += 8;
+
+  doc.setFont("helvetica", "normal"); doc.setFontSize(9.5); doc.setTextColor(55, 71, 79);
+  doc.text(`Paciente: ${patient ? patient.nome : ''}`, 20, currentY); currentY += 5;
+  doc.text("Daniele Sousa Santos - CRP 22/07398", 20, currentY); currentY += 8;
+
+  doc.setDrawColor(216, 27, 96); doc.line(20, currentY, 190, currentY); currentY += 10;
+
+  document.querySelectorAll('.doc-section-item').forEach(el => {
+    const secTitle = el.querySelector('.sec-title').value;
+    const secContent = el.querySelector('.sec-content').value;
+
+    if (currentY > 250) { doc.addPage(); currentY = 20; }
+    if (secTitle) {
+      doc.setFont("helvetica", "bold"); doc.text(secTitle, 20, currentY); currentY += 5;
+    }
+    if (secContent) {
+      doc.setFont("helvetica", "normal");
+      const lines = doc.splitTextToSize(secContent, 170);
+      lines.forEach(line => {
+        if (currentY > 270) { doc.addPage(); currentY = 20; }
         doc.text(line, 20, currentY, { align: "justify", maxWidth: 170 });
         currentY += 5;
       });
       currentY += 4;
+    }
+  });
+
+  const pageCount = doc.internal.getNumberOfPages();
+  for (let i = 1; i <= pageCount; i++) {
+    doc.setPage(i); doc.setFontSize(8); doc.setTextColor(150);
+    doc.text(`Página ${i} de ${pageCount}`, 105, 290, { align: "center" });
+  }
+
+  doc.save(`${title.replace(/\s+/g, '_')}_${patient ? patient.nome.replace(/\s+/g, '_') : ''}.pdf`);
+}
+
+/* MODELOS/TEMPLATES */
+async function saveAsTemplateModal() {
+  const nomeModelo = prompt("Informe o nome para este modelo de documento:");
+  if (!nomeModelo) return;
+
+  const sections = [];
+  document.querySelectorAll('.doc-section-item').forEach(el => {
+    sections.push({ titulo: el.querySelector('.sec-title').value });
+  });
+
+  try {
+    await saveItem('modelos', { nomeModelo, secoes: sections });
+    showToast("Modelo salvo com sucesso.");
+  } catch (e) {
+    showToast("Não foi possível salvar. Tente novamente.", true);
+  }
+}
+
+async function openTemplatesModal() {
+  const tbody = document.getElementById('templates-table-body');
+  tbody.innerHTML = '';
+
+  const templates = await getAll('modelos');
+  if (templates.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">Nenhum modelo cadastrado.</td></tr>';
+  } else {
+    templates.forEach(t => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${t.nomeModelo}</td>
+        <td>${t.secoes ? t.secoes.length : 0} seções</td>
+        <td><button class="btn-danger" onclick="deleteTemplate(${t.id})">Excluir</button></td>`;
+      tbody.appendChild(tr);
     });
   }
-
-  // Assinatura ao final
-  if (currentY > 250) {
-    doc.addPage();
-    currentY = 30;
-  } else {
-    currentY += 15;
-  }
-
-  doc.setDrawColor(55, 71, 79);
-  doc.setLineWidth(0.3);
-  doc.line(70, currentY, 140, currentY);
-  currentY += 5;
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(9.5);
-  doc.setTextColor(55, 71, 79);
-  doc.text("Daniele Sousa Santos", 105, currentY, { align: "center" });
-  currentY += 4;
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(8.5);
-  doc.setTextColor(120, 144, 156);
-  doc.text("Psicóloga - CRP: 22/07398", 105, currentY, { align: "center" });
-
-  doc.save(`Relatorio_Faltas_${periodType}.pdf`);
+  openModal('modal-templates');
 }
 
-/* CONTROLE DE EXIBIÇÃO DE CAMPOS NA SESSÃO */
-function toggleSessionStatusFields() {
-  const status = document.getElementById('session-status').value;
-  const valGroup = document.getElementById('group-session-value');
-  const payGroup = document.getElementById('group-session-payment');
-  const faultGroup = document.getElementById('group-session-fault-reason');
-
-  const valInput = document.getElementById('session-value');
-  const paySelect = document.getElementById('session-payment-status');
-  const faultInput = document.getElementById('session-fault-reason');
-
-  if (status === 'falta') {
-    valGroup.style.display = 'none';
-    payGroup.style.display = 'none';
-    faultGroup.style.display = 'block';
-
-    valInput.required = false;
-    paySelect.required = false;
-    faultInput.required = true;
-  } else {
-    valGroup.style.display = 'block';
-    payGroup.style.display = 'block';
-    faultGroup.style.display = 'none';
-
-    valInput.required = true;
-    paySelect.required = true;
-    faultInput.required = false;
+async function deleteTemplate(id) {
+  if (confirm("Excluir este modelo?")) {
+    await deleteItem('modelos', id);
+    openTemplatesModal();
   }
 }
 
-/* MODAIS DE SESSÃO, EVOLUÇÃO E RECIBOS */
+/* RENDER DOCUMENTOS LIST */
+async function renderPatientDocumentsList() {
+  if (!currentPatientId) return;
+
+  const docs = await getAll('documentos');
+  const patientDocs = docs.filter(d => Number(d.pacienteld) === Number(currentPatientId));
+
+  const tbody = document.getElementById('documents-table-body');
+  tbody.innerHTML = '';
+
+  const anamneses = await getAll('anamneses');
+  const anam = anamneses.find(a => Number(a.pacienteld) === Number(currentPatientId));
+
+  if (anam) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${new Date(anam.dataAtualizacao || Date.now()).toLocaleDateString('pt-BR')}</td>
+      <td><strong>Anamnese Inicial Psicológica</strong></td>
+      <td>Anamnese</td>
+      <td>
+        <button class="btn-secondary" onclick="openAnamneseModal()">Editar</button>
+        <button class="btn-pdf" onclick="generateAnamnesePDF()">PDF</button>
+      </td>`;
+    tbody.appendChild(tr);
+  }
+
+  patientDocs.forEach(d => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${new Date(d.dataCriacao).toLocaleDateString('pt-BR')}</td>
+      <td><strong>${d.titulo}</strong></td>
+      <td>${d.tipo}</td>
+      <td>
+        <button class="btn-secondary" onclick="openCustomDocumentModal(${d.id})">Editar</button>
+        ${d.arquivoData ? `<button class="btn-pdf" onclick="downloadImportedPDFDoc(${d.id})">Ver PDF Original</button>` : ''}
+        <button class="btn-danger" onclick="deleteDocument(${d.id})">Excluir</button>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+async function deleteDocument(docId) {
+  if (confirm("Deseja excluir este documento?")) {
+    await deleteItem('documentos', docId);
+    renderPatientDocumentsList();
+  }
+}
+
+function downloadImportedPDFDoc(docId) {
+  getById('documentos', docId).then(doc => {
+    if (doc && doc.arquivoData) {
+      const win = window.open();
+      win.document.write(`<iframe src="${doc.arquivoData}" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>`);
+    } else {
+      showToast("Arquivo não encontrado.", true);
+    }
+  });
+}
+
+/* IMPORTAR EVOLUÇÕES EM PDF */
+let parsedImportEvolutions = [];
+
+function openImportPDFModal() {
+  if (!currentPatientId) {
+    showToast("Nenhum paciente selecionado.", true);
+    return;
+  }
+  document.getElementById('import-pdf-files').value = '';
+  document.getElementById('import-pdf-preview-container').style.display = 'none';
+  document.getElementById('import-pdf-list').innerHTML = '';
+  document.getElementById('btn-confirm-import-pdf').style.display = 'none';
+  parsedImportEvolutions = [];
+  openModal('modal-import-pdf');
+}
+
+async function handleImportPDFFilesSelect(event) {
+  const files = Array.from(event.target.files);
+  if (!files || files.length === 0) return;
+
+  if (typeof pdfjsLib === 'undefined') {
+    showToast("Erro ao carregar módulo PDF.js. Verifique sua conexão.", true);
+    return;
+  }
+
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+  parsedImportEvolutions = [];
+
+  const existingDocs = await getAll('documentos');
+  const existingPatientDocs = existingDocs.filter(d => Number(d.pacienteld) === Number(currentPatientId));
+  const existingSessions = await getAll('sessoes');
+  const existingPatientSessions = existingSessions.filter(s => Number(s.pacienteld || s.patientId) === Number(currentPatientId));
+
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+    const isDuplicateFile = existingPatientDocs.some(d => d.nomeArquivo === file.name && d.tamanhoArquivo === file.size);
+    const base64Data = await readFileAsBase64(file);
+
+    let extractedText = '';
+    let hasReadableText = true;
+
+    try {
+      const arrayBuffer = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      let fullText = '';
+      for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+        const page = await pdf.getPage(pageNum);
+        const textContent = await page.getTextContent();
+        const pageText = textContent.items.map(item => item.str).join(' ');
+        fullText += pageText + '\n';
+      }
+      extractedText = fullText.trim();
+      if (!extractedText) hasReadableText = false;
+    } catch (err) {
+      hasReadableText = false;
+    }
+
+    let detectedDate = extractDateFromText(extractedText);
+    if (!detectedDate) {
+      const now = new Date();
+      detectedDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}T10:00`;
+    }
+
+    const isDuplicateSession = existingPatientSessions.some(s => {
+      const sDate = s.dataHora || s.datetime;
+      return sDate && sDate.substring(0, 10) === detectedDate.substring(0, 10);
+    });
+
+    const itemData = {
+      idTemp: Date.now() + Math.random().toString(36).substr(2, 5),
+      fileName: file.name,
+      fileSize: file.size,
+      base64Data: base64Data,
+      extractedText: extractedText,
+      hasReadableText: hasReadableText,
+      detectedDate: detectedDate,
+      isDuplicateFile: isDuplicateFile,
+      isDuplicateSession: isDuplicateSession,
+      descricao: extractedText,
+      modalidade: 'Presencial',
+      statusSession: 'realizada',
+      valor: 0,
+      pagamentoStatus: 'pago'
+    };
+
+    parsedImportEvolutions.push(itemData);
+  }
+
+  renderImportPDFPreviewList();
+}
+
+function readFileAsBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+    reader.readAsDataURL(file);
+  });
+}
+
+function extractDateFromText(text) {
+  if (!text) return null;
+  const brDateRegex = /(\d{1,2})[\/\.-](\d{1,2})[\/\.-](\d{4})/;
+  const matchBR = text.match(brDateRegex);
+  if (matchBR) {
+    const day = String(matchBR[1]).padStart(2, '0');
+    const month = String(matchBR[2]).padStart(2, '0');
+    const year = matchBR[3];
+    return `${year}-${month}-${day}T10:00`;
+  }
+
+  const isoDateRegex = /(\d{4})[\/\.-](\d{1,2})[\/\.-](\d{1,2})/;
+  const matchISO = text.match(isoDateRegex);
+  if (matchISO) {
+    const year = matchISO[1];
+    const month = String(matchISO[2]).padStart(2, '0');
+    const day = String(matchISO[3]).padStart(2, '0');
+    return `${year}-${month}-${day}T10:00`;
+  }
+  return null;
+}
+
+function renderImportPDFPreviewList() {
+  const container = document.getElementById('import-pdf-list');
+  container.innerHTML = '';
+
+  if (parsedImportEvolutions.length === 0) {
+    document.getElementById('import-pdf-preview-container').style.display = 'none';
+    document.getElementById('btn-confirm-import-pdf').style.display = 'none';
+    return;
+  }
+
+  document.getElementById('import-pdf-preview-container').style.display = 'block';
+  document.getElementById('btn-confirm-import-pdf').style.display = 'inline-block';
+
+  parsedImportEvolutions.forEach((item, index) => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.style.padding = '15px';
+    div.style.border = '1px solid var(--border-color)';
+
+    let warningHtml = '';
+    if (!item.hasReadableText) {
+      warningHtml += `<div style="background-color: #fff3e0; color: var(--warning-color); padding: 8px 12px; border-radius: 6px; font-size: 0.85rem; margin-bottom: 10px; font-weight: 500;">
+      ⚠️ O PDF não possui texto extraível automaticamente (ex: documento digitalizado/imagem). É necessário a revisão e digitação manual do conteúdo.
+      </div>`;
+    }
+    if (item.isDuplicateFile || item.isDuplicateSession) {
+      warningHtml += `<div style="background-color: #ffebee; color: var(--danger-color); padding: 8px 12px; border-radius: 6px; font-size: 0.85rem; margin-bottom: 10px; font-weight: 500;">
+      🚨 Atenção: Este arquivo ou sessão nesta data aparenta já ter sido importado anteriormente. Verifique antes de confirmar.
+      </div>`;
+    }
+
+    div.innerHTML = `
+      ${warningHtml}
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <strong style="color: var(--dark-pink); font-size: 0.95rem;">📄 Arquivo: ${item.fileName}</strong>
+        <button type="button" class="btn-danger" onclick="removeImportItem(${index})">Remover</button>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Data e Hora Detectada *</label>
+          <input type="datetime-local" value="${item.detectedDate}" onchange="parsedImportEvolutions[${index}].detectedDate = this.value">
+        </div>
+        <div class="form-group">
+          <label>Modalidade</label>
+          <select onchange="parsedImportEvolutions[${index}].modalidade = this.value">
+            <option value="Presencial" ${item.modalidade === 'Presencial' ? 'selected' : ''}>Presencial</option>
+            <option value="Online" ${item.modalidade === 'Online' ? 'selected' : ''}>Online</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Texto da Evolução *</label>
+        <textarea rows="3" onchange="parsedImportEvolutions[${index}].descricao = this.value">${item.descricao}</textarea>
+      </div>`;
+    container.appendChild(div);
+  });
+}
+
+function removeImportItem(index) {
+  parsedImportEvolutions.splice(index, 1);
+  renderImportPDFPreviewList();
+}
+
+async function confirmImportPDFEvolutions() {
+  if (!currentPatientId || parsedImportEvolutions.length === 0) return;
+
+  try {
+    for (const item of parsedImportEvolutions) {
+      const sessionData = {
+        pacienteld: Number(currentPatientId),
+        dataHora: item.detectedDate,
+        modalidade: item.modalidade,
+        status: 'realizada',
+        valor: item.valor,
+        pagamentoStatus: item.pagamentoStatus
+      };
+      const sessionId = await saveItem('sessoes', sessionData);
+
+      const evolutionData = {
+        sessaold: Number(sessionId),
+        pacienteld: Number(currentPatientId),
+        descricao: item.descricao
+      };
+      await saveItem('evolucoes', evolutionData);
+
+      const docData = {
+        pacienteld: Number(currentPatientId),
+        titulo: `Importado: ${item.fileName}`,
+        tipo: 'PDF Importado',
+        nomeArquivo: item.fileName,
+        tamanhoArquivo: item.fileSize,
+        arquivoData: item.base64Data,
+        dataCriacao: new Date().toISOString()
+      };
+      await saveItem('documentos', docData);
+    }
+
+    showToast("Evoluções registradas com sucesso!");
+    closeModal('modal-import-pdf');
+    loadProntuarioData(currentPatientId);
+  } catch (err) {
+    showToast("Erro ao importar evoluções.", true);
+  }
+}
+
+/* OUTROS MODAIS E AUXILIARES DO PRONTUÁRIO */
 function openSessionModal(sessionId = null) {
   document.getElementById('form-session').reset();
   document.getElementById('session-id').value = '';
+  document.getElementById('modal-session-title').innerText = 'Registrar Sessão';
+  toggleSessionStatusFields();
 
   if (sessionId) {
     getById('sessoes', sessionId).then(s => {
@@ -1771,113 +2004,237 @@ function openSessionModal(sessionId = null) {
       document.getElementById('session-mode').value = s.modalidade || s.mode || 'Online';
       document.getElementById('session-status').value = s.status || 'realizada';
       document.getElementById('session-value').value = s.valor || s.value || '';
-      document.getElementById('session-payment-status').value = s.pagamentoStatus || s.paymentStatus || 'pendente';
+      document.getElementById('session-payment-status').value = s.pagamentoStatus || s.paymentStatus || 'pago';
       document.getElementById('session-fault-reason').value = s.motivoFalta || '';
-
+      document.getElementById('modal-session-title').innerText = 'Editar Sessão';
       toggleSessionStatusFields();
       openModal('modal-session');
     });
   } else {
     const now = new Date();
-    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-    document.getElementById('session-datetime').value = now.toISOString().slice(0, 16);
-    toggleSessionStatusFields();
+    const localIso = new Date(now.getTime() - (now.getTimezoneOffset() * 60000)).toISOString().slice(0, 16);
+    document.getElementById('session-datetime').value = localIso;
     openModal('modal-session');
+  }
+}
+
+function toggleSessionStatusFields() {
+  const status = document.getElementById('session-status').value;
+  const groupVal = document.getElementById('group-session-value');
+  const groupPay = document.getElementById('group-session-payment');
+  const groupFault = document.getElementById('group-session-fault-reason');
+
+  if (status === 'falta') {
+    groupVal.style.display = 'none';
+    groupPay.style.display = 'none';
+    groupFault.style.display = 'block';
+  } else {
+    groupVal.style.display = 'block';
+    groupPay.style.display = 'block';
+    groupFault.style.display = 'none';
   }
 }
 
 async function handleSessionSubmit(e) {
   e.preventDefault();
+  if (!currentPatientId) return;
+
   const id = document.getElementById('session-id').value;
   const status = document.getElementById('session-status').value;
 
-  const sessionData = {
+  const data = {
     pacienteld: Number(currentPatientId),
-    patientId: Number(currentPatientId),
     dataHora: document.getElementById('session-datetime').value,
     modalidade: document.getElementById('session-mode').value,
-    status: status
+    status: status,
+    valor: status === 'falta' ? 0 : Number(document.getElementById('session-value').value || 0),
+    pagamentoStatus: status === 'falta' ? 'N/A' : document.getElementById('session-payment-status').value,
+    motivoFalta: status === 'falta' ? document.getElementById('session-fault-reason').value : ''
   };
 
-  if (status === 'falta') {
-    sessionData.motivoFalta = document.getElementById('session-fault-reason').value;
-    sessionData.valor = 0;
-    sessionData.pagamentoStatus = 'N/A';
-  } else {
-    sessionData.valor = parseFloat(document.getElementById('session-value').value);
-    sessionData.pagamentoStatus = document.getElementById('session-payment-status').value;
-  }
+  if (id) data.id = Number(id);
 
-  if (id) {
-    const existing = await getById('sessoes', id);
-    sessionData.id = Number(id);
-    if (existing && existing.recibo) sessionData.recibo = existing.recibo;
-    if (existing && existing.receipt) sessionData.receipt = existing.receipt;
+  try {
+    await saveItem('sessoes', data);
+    showToast("Sessão salva com sucesso.");
+    closeModal('modal-session');
+    loadProntuarioData(currentPatientId);
+    loadDashboardData();
+  } catch (err) {
+    showToast("Não foi possível salvar a sessão.", true);
   }
-
-  await saveItem('sessoes', sessionData);
-  closeModal('modal-session');
-  loadProntuarioData(currentPatientId);
-  loadDashboardData();
 }
 
-function openEvolutionModal(sessionId, evolutionId = null) {
+async function deleteSession(id) {
+  if (confirm("Excluir esta sessão?")) {
+    await deleteItem('sessoes', id);
+    loadProntuarioData(currentPatientId);
+    loadDashboardData();
+  }
+}
+
+async function openEvolutionModal(sessionId, evoId = null) {
   document.getElementById('form-evolution').reset();
   document.getElementById('evolution-id').value = '';
   document.getElementById('evolution-session-id').value = sessionId;
 
-  if (evolutionId) {
-    getById('evolucoes', evolutionId).then(e => {
-      if (e) {
-        document.getElementById('evolution-id').value = e.id;
-        document.getElementById('evo-complaint').value = e.queixa || e.complaint || '';
-        document.getElementById('evo-demand').value = e.demanda || e.demand || '';
-        document.getElementById('evo-description').value = e.descricao || e.description || '';
-        document.getElementById('evo-analysis').value = e.analise || e.analysis || '';
-        openModal('modal-evolution');
-      }
-    });
-  } else {
-    openModal('modal-evolution');
+  if (evoId) {
+    const evo = await getById('evolucoes', evoId);
+    if (evo) {
+      document.getElementById('evolution-id').value = evo.id;
+      document.getElementById('evo-objective').value = evo.objetivo || '';
+      document.getElementById('evo-complaint').value = evo.queixa || '';
+      document.getElementById('evo-demand').value = evo.demanda || '';
+      document.getElementById('evo-description').value = evo.descricao || '';
+      document.getElementById('evo-analysis').value = evo.analise || '';
+      document.getElementById('evo-planning').value = evo.planejamento || '';
+      document.getElementById('evo-procedures').value = evo.procedimentos || '';
+    }
   }
+  openModal('modal-evolution');
 }
 
 async function handleEvolutionSubmit(e) {
   e.preventDefault();
+  if (!currentPatientId) return;
+
   const id = document.getElementById('evolution-id').value;
   const sessionId = document.getElementById('evolution-session-id').value;
 
-  const evoData = {
+  const data = {
     sessaold: Number(sessionId),
     pacienteld: Number(currentPatientId),
+    objetivo: document.getElementById('evo-objective').value,
     queixa: document.getElementById('evo-complaint').value,
     demanda: document.getElementById('evo-demand').value,
     descricao: document.getElementById('evo-description').value,
-    analise: document.getElementById('evo-analysis').value
+    analise: document.getElementById('evo-analysis').value,
+    planejamento: document.getElementById('evo-planning').value,
+    procedimentos: document.getElementById('evo-procedures').value
   };
 
-  if (id) evoData.id = Number(id);
+  if (id) data.id = Number(id);
 
-  await saveItem('evolucoes', evoData);
-  closeModal('modal-evolution');
-  loadProntuarioData(currentPatientId);
+  try {
+    await saveItem('evolucoes', data);
+    showToast("Evolução registrada.");
+    closeModal('modal-evolution');
+    loadProntuarioData(currentPatientId);
+  } catch (err) {
+    showToast("Não foi possível salvar a evolução.", true);
+  }
+}
+
+async function generateSessionPDF(sessionId) {
+  const session = await getById('sessoes', sessionId);
+  const evolutions = await getAll('evolucoes');
+  const evo = evolutions.find(e => Number(e.sessaold) === Number(sessionId));
+  const patient = await getById('pacientes', currentPatientId);
+
+  if (!session || !patient) return;
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF('p', 'mm', 'a4');
+  let currentY = 20;
+
+  doc.setFont("helvetica", "bold"); doc.setFontSize(14); doc.setTextColor(136, 14, 79);
+  doc.text("REGISTRO DE EVOLUÇÃO CLÍNICA", 105, currentY, { align: "center" });
+  currentY += 8;
+
+  doc.setFont("helvetica", "normal"); doc.setFontSize(9.5); doc.setTextColor(55, 71, 79);
+  doc.text("Daniele Sousa Santos - CRP 22/07398", 105, currentY, { align: "center" });
+  currentY += 10;
+
+  doc.setDrawColor(216, 27, 96); doc.line(20, currentY, 190, currentY); currentY += 10;
+
+  const dt = new Date(session.dataHora || session.datetime).toLocaleString('pt-BR');
+  doc.setFont("helvetica", "bold"); doc.text("Dados da Sessão", 20, currentY); currentY += 6;
+  doc.setFont("helvetica", "normal");
+  doc.text(`Paciente: ${patient.nome}`, 20, currentY); currentY += 5;
+  doc.text(`Data/Hora: ${dt} | Modalidade: ${session.modalidade}`, 20, currentY); currentY += 10;
+
+  if (evo) {
+    function addPdfField(title, text) {
+      if (!text) return;
+      if (currentY > 250) { doc.addPage(); currentY = 20; }
+      doc.setFont("helvetica", "bold"); doc.text(title, 20, currentY); currentY += 5;
+      doc.setFont("helvetica", "normal");
+      const lines = doc.splitTextToSize(text, 170);
+      lines.forEach(l => {
+        if (currentY > 270) { doc.addPage(); currentY = 20; }
+        doc.text(l, 20, currentY, { align: "justify", maxWidth: 170 });
+        currentY += 5;
+      });
+      currentY += 3;
+    }
+
+    addPdfField("Objetivo:", evo.objetivo);
+    addPdfField("Queixa Principal / Relato:", evo.queixa);
+    addPdfField("Demanda Trabalhada:", evo.demanda);
+    addPdfField("Descrição da Sessão:", evo.descricao);
+    addPdfField("Análise Técnica:", evo.analise);
+    addPdfField("Planejamento:", evo.planejamento);
+    addPdfField("Procedimentos Adotados:", evo.procedimentos);
+  }
+
+  if (currentY > 240) { doc.addPage(); currentY = 30; } else { currentY += 15; }
+  doc.line(70, currentY, 140, currentY); currentY += 5;
+  doc.setFont("helvetica", "bold"); doc.text("Daniele Sousa Santos", 105, currentY, { align: "center" }); currentY += 4;
+  doc.setFont("helvetica", "normal"); doc.text("CRP 22/07398", 105, currentY, { align: "center" });
+
+  doc.save(`Evolucao_${patient.nome.replace(/\s+/g, '_')}_${session.id}.pdf`);
+}
+
+async function generateFaultPDF(sessionId) {
+  const session = await getById('sessoes', sessionId);
+  const patient = await getById('pacientes', currentPatientId);
+
+  if (!session || !patient) return;
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF('p', 'mm', 'a4');
+  let currentY = 20;
+
+  doc.setFont("helvetica", "bold"); doc.setFontSize(14); doc.setTextColor(136, 14, 79);
+  doc.text("REGISTRO DE FALTA DO PACIENTE", 105, currentY, { align: "center" });
+  currentY += 8;
+
+  doc.setFont("helvetica", "normal"); doc.setFontSize(9.5); doc.setTextColor(55, 71, 79);
+  doc.text("Daniele Sousa Santos - CRP 22/07398", 105, currentY, { align: "center" });
+  currentY += 10;
+
+  doc.setDrawColor(216, 27, 96); doc.line(20, currentY, 190, currentY); currentY += 10;
+
+  const dt = new Date(session.dataHora || session.datetime).toLocaleString('pt-BR');
+  doc.text(`Paciente: ${patient.nome}`, 20, currentY); currentY += 6;
+  doc.text(`Data/Hora Agendada: ${dt}`, 20, currentY); currentY += 6;
+  doc.text(`Modalidade: ${session.modalidade}`, 20, currentY); currentY += 10;
+
+  doc.setFont("helvetica", "bold"); doc.text("Motivo Registrado:", 20, currentY); currentY += 6;
+  doc.setFont("helvetica", "normal");
+  doc.text(session.motivoFalta || "Não informado", 20, currentY); currentY += 20;
+
+  doc.line(70, currentY, 140, currentY); currentY += 5;
+  doc.setFont("helvetica", "bold"); doc.text("Daniele Sousa Santos", 105, currentY, { align: "center" }); currentY += 4;
+  doc.setFont("helvetica", "normal"); doc.text("CRP 22/07398", 105, currentY, { align: "center" });
+
+  doc.save(`Falta_${patient.nome.replace(/\s+/g, '_')}_${session.id}.pdf`);
 }
 
 async function openReceiptModal(sessionId) {
   document.getElementById('form-receipt').reset();
   document.getElementById('receipt-session-id').value = sessionId;
-  const statusDiv = document.getElementById('receipt-current-status');
-  const btnRemove = document.getElementById('btn-remove-receipt');
-
   const session = await getById('sessoes', sessionId);
-  const rec = session ? (session.recibo || session.receipt) : null;
 
-  if (rec) {
-    statusDiv.innerHTML = `<p style="color: var(--success-color);">Recibo Anexado: <strong>${rec.nome || rec.name}</strong></p>`;
-    btnRemove.style.display = 'inline-block';
+  const statusDiv = document.getElementById('receipt-current-status');
+  const removeBtn = document.getElementById('btn-remove-receipt');
+
+  if (session && (session.recibo || session.receipt)) {
+    statusDiv.innerHTML = `<span style="color:var(--success-color); font-weight:600;">✓ Comprovante Anexado</span>`;
+    removeBtn.style.display = 'inline-block';
   } else {
-    statusDiv.innerHTML = '<p style="color: var(--text-muted);">Nenhum recibo anexado.</p>';
-    btnRemove.style.display = 'none';
+    statusDiv.innerHTML = `<span style="color:var(--text-muted);">Nenhum comprovante anexado.</span>`;
+    removeBtn.style.display = 'none';
   }
   openModal('modal-receipt');
 }
@@ -1889,15 +2246,13 @@ async function handleReceiptSubmit(e) {
 
   if (fileInput.files.length > 0) {
     const file = fileInput.files[0];
-    const reader = new FileReader();
-    reader.onload = async function(event) {
-      const session = await getById('sessoes', sessionId);
-      session.recibo = { nome: file.name, tipo: file.type, conteudo: event.target.result };
-      await saveItem('sessoes', session);
-      closeModal('modal-receipt');
-      loadProntuarioData(currentPatientId);
-    };
-    reader.readAsDataURL(file);
+    const base64 = await readFileAsBase64(file);
+    const session = await getById('sessoes', sessionId);
+    session.recibo = base64;
+    await saveItem('sessoes', session);
+    showToast("Comprovante salvo com sucesso.");
+    closeModal('modal-receipt');
+    loadProntuarioData(currentPatientId);
   } else {
     closeModal('modal-receipt');
   }
@@ -1910,50 +2265,310 @@ async function removeReceipt() {
     delete session.recibo;
     delete session.receipt;
     await saveItem('sessoes', session);
+    showToast("Comprovante removido.");
     closeModal('modal-receipt');
     loadProntuarioData(currentPatientId);
   }
 }
 
-function openMonthlySummaryModal() {
-  document.getElementById('summary-month-select').value = '';
-  document.getElementById('summary-results').innerHTML =
-    '<p style="color: var(--text-muted);">Escolha um mês para visualizar o consolidado do paciente.</p>';
+async function openMonthlySummaryModal() {
+  if (!currentPatientId) return;
+  const now = new Date();
+  document.getElementById('summary-month-select').value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  generateMonthlySummary();
   openModal('modal-monthly-summary');
 }
 
 async function generateMonthlySummary() {
   const monthVal = document.getElementById('summary-month-select').value;
+  const resDiv = document.getElementById('summary-results');
+
   if (!monthVal || !currentPatientId) return;
 
-  const allSessions = await getAll('sessoes');
-  const patientSessions = allSessions.filter(s =>
-    Number(s.pacienteld || s.patientId) === Number(currentPatientId) && (s.dataHora || s.datetime || '').startsWith(monthVal));
+  const sessions = await getAll('sessoes');
+  const patientSessions = sessions.filter(s => Number(s.pacienteld || s.patientId) === Number(currentPatientId) && (s.dataHora || s.datetime || '').startsWith(monthVal));
 
-  let totalSessions = patientSessions.length;
-  let realizadas = 0, canceladas = 0, faltas = 0;
-  let valorTotal = 0, valorPago = 0;
+  const total = patientSessions.length;
+  const realizadas = patientSessions.filter(s => s.status === 'realizada').length;
+  const faltas = patientSessions.filter(s => s.status === 'falta').length;
+  const canceladas = patientSessions.filter(s => s.status === 'cancelada').length;
 
-  patientSessions.forEach(s => {
-    if (s.status === 'realizada') realizadas++;
-    if (s.status === 'cancelada') canceladas++;
-    if (s.status === 'falta') faltas++;
+  resDiv.innerHTML = `
+    <h4 style="color: var(--dark-pink); margin-bottom: 10px;">Resumo do Mês (${monthVal})</h4>
+    <p><strong>Total de Agendamentos:</strong> ${total}</p>
+    <p><strong>Sessões Realizadas:</strong> ${realizadas}</p>
+    <p><strong>Faltas:</strong> ${faltas}</p>
+    <p><strong>Cancelamentos:</strong> ${canceladas}</p>`;
+}
 
-    if (s.status !== 'falta') {
-      const v = parseFloat(s.valor || s.value) || 0;
-      valorTotal += v;
-      if ((s.pagamentoStatus || s.paymentStatus) === 'pago') valorPago += v;
+async function generatePsychologicalReportDraft() {
+  if (!currentPatientId) return;
+  openCustomDocumentModal();
+  document.getElementById('doc-title').value = "Relatório Psicológico";
+}
+
+async function exportFullProntuarioPDF() {
+  if (!currentPatientId) return;
+  const patient = await getById('pacientes', currentPatientId);
+  const sessions = await getAll('sessoes');
+  const evolutions = await getAll('evolucoes');
+  const anamneses = await getAll('anamneses');
+
+  const pSessions = sessions.filter(s => Number(s.pacienteld || s.patientId) === Number(currentPatientId));
+  const anam = anamneses.find(a => Number(a.pacienteld) === Number(currentPatientId));
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF('p', 'mm', 'a4');
+  let currentY = 20;
+
+  doc.setFont("helvetica", "bold"); doc.setFontSize(16); doc.setTextColor(136, 14, 79);
+  doc.text("PRONTUÁRIO PSICOLÓGICO COMPLETO", 105, currentY, { align: "center" }); currentY += 8;
+
+  doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(55, 71, 79);
+  doc.text("Daniele Sousa Santos - CRP 22/07398", 105, currentY, { align: "center" }); currentY += 10;
+
+  doc.setDrawColor(216, 27, 96); doc.line(20, currentY, 190, currentY); currentY += 10;
+
+  doc.setFont("helvetica", "bold"); doc.text("Identificação do Paciente", 20, currentY); currentY += 6;
+  doc.setFont("helvetica", "normal");
+  doc.text(`Nome: ${patient.nome || ''}`, 20, currentY); currentY += 5;
+  if (patient.idade) { doc.text(`Idade: ${patient.idade} anos`, 20, currentY); currentY += 5; }
+  doc.text(`Tipo: ${patient.tipo || ''} | Contato: ${patient.telefone || ''}`, 20, currentY); currentY += 10;
+
+  if (anam) {
+    doc.setFont("helvetica", "bold"); doc.text("Anamnese Inicial", 20, currentY); currentY += 6;
+    doc.setFont("helvetica", "normal");
+    
+    const listTopicos = anam.topicos || [
+      { titulo: "Queixa Principal", conteudo: anam.queixa },
+      { titulo: "Histórico Familiar", conteudo: anam.historicoFamiliar },
+      { titulo: "Histórico Médico", conteudo: anam.historicoMedico },
+      { titulo: "Observações", conteudo: anam.observacoes }
+    ];
+
+    listTopicos.forEach(t => {
+      if (!t.conteudo) return;
+      if (currentY > 250) { doc.addPage(); currentY = 20; }
+      doc.setFont("helvetica", "bold"); doc.text(`${t.titulo}:`, 20, currentY); currentY += 5;
+      doc.setFont("helvetica", "normal");
+      const lines = doc.splitTextToSize(t.conteudo, 170);
+      lines.forEach(l => {
+        if (currentY > 270) { doc.addPage(); currentY = 20; }
+        doc.text(l, 20, currentY, { align: "justify", maxWidth: 170 });
+        currentY += 5;
+      });
+      currentY += 3;
+    });
+    currentY += 5;
+  }
+
+  doc.setFont("helvetica", "bold"); doc.text("Histórico de Evoluções", 20, currentY); currentY += 6;
+
+  pSessions.forEach(s => {
+    const evo = evolutions.find(e => Number(e.sessaold) === Number(s.id));
+    if (currentY > 240) { doc.addPage(); currentY = 20; }
+    doc.setFont("helvetica", "bold");
+    const dt = new Date(s.dataHora || s.datetime).toLocaleString('pt-BR');
+    doc.text(`Sessão - ${dt} (${s.modalidade})`, 20, currentY); currentY += 5;
+    doc.setFont("helvetica", "normal");
+
+    if (s.status === 'falta') {
+      doc.text(`FALTA REGISTRADA - Motivo: ${s.motivoFalta || 'Não informado'}`, 20, currentY);
+      currentY += 6;
+    } else if (evo && evo.descricao) {
+      const lines = doc.splitTextToSize(evo.descricao, 170);
+      lines.forEach(l => {
+        if (currentY > 270) { doc.addPage(); currentY = 20; }
+        doc.text(l, 20, currentY, { align: "justify", maxWidth: 170 });
+        currentY += 5;
+      });
+      currentY += 4;
+    } else {
+      doc.text("Sem evolução detalhada gravada.", 20, currentY);
+      currentY += 6;
     }
   });
 
-  document.getElementById('summary-results').innerHTML = `
-    <p><strong>Total de Sessões no Mês:</strong> ${totalSessions}</p>
-    <p><strong>Realizadas:</strong> ${realizadas} | <strong>Canceladas:</strong> ${canceladas} | <strong>Faltas:</strong> ${faltas}</p>
-    <hr style="margin: 10px 0; border-color: var(--light-pink);">
-    <p><strong>Faturado:</strong> ${valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-    <p><strong>Pago:</strong> ${valorPago.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-    <p><strong>Pendente:</strong> ${(valorTotal - valorPago).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-  `;
+  const pageCount = doc.internal.getNumberOfPages();
+  for (let i = 1; i <= pageCount; i++) {
+    doc.setPage(i); doc.setFontSize(8); doc.setTextColor(150);
+    doc.text(`Página ${i} de ${pageCount}`, 105, 290, { align: "center" });
+  }
+
+  doc.save(`Prontuario_Completo_${patient.nome.replace(/\s+/g, '_')}.pdf`);
+}
+
+/* FINANCEIRO LOGIC */
+function initFinanceView() {
+  const now = new Date();
+  document.getElementById('finance-month-select').value = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  renderFinancialReport();
+}
+
+async function renderFinancialReport() {
+  const monthVal = document.getElementById('finance-month-select').value;
+  if (!monthVal) return;
+
+  const sessions = await getAll('sessoes');
+  const patients = await getAll('pacientes');
+
+  const monthSessions = sessions.filter(s => (s.dataHora || s.datetime || '').startsWith(monthVal));
+
+  let gross = 0;
+  let received = 0;
+  let pending = 0;
+
+  const tbody = document.getElementById('finance-table-body');
+  tbody.innerHTML = '';
+
+  monthSessions.forEach(s => {
+    const isFalta = s.status === 'falta';
+    const val = isFalta ? 0 : parseFloat(s.valor || s.value || 0);
+    const isPaid = (s.pagamentoStatus || s.paymentStatus) === 'pago';
+
+    if (!isFalta) {
+      gross += val;
+      if (isPaid) received += val;
+      else pending += val;
+    }
+
+    const patient = patients.find(p => Number(p.id) === Number(s.pacienteld || s.patientId));
+    const pName = patient ? patient.nome : 'Desconhecido';
+    const dt = new Date(s.dataHora || s.datetime).toLocaleString('pt-BR');
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${dt}</td>
+      <td>${pName}</td>
+      <td>${isFalta ? '-' : val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+      <td><span class="badge ${isFalta ? 'badge-falta' : 'badge-active'}">${s.status.toUpperCase()}</span></td>
+      <td><span class="badge ${isFalta ? 'badge-falta' : (isPaid ? 'badge-paid' : 'badge-pending')}">${isFalta ? 'N/A' : (isPaid ? 'PAGO' : 'PENDENTE')}</span></td>
+      <td>
+        ${!isFalta ? `<button class="btn-secondary" onclick="togglePaymentStatus(${s.id})">Alternar Pagamento</button>` : '-'}
+      </td>`;
+    tbody.appendChild(tr);
+  });
+
+  document.getElementById('fin-total-gross').innerText = gross.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  document.getElementById('fin-total-received').innerText = received.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  document.getElementById('fin-total-pending').innerText = pending.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+  const adim = gross > 0 ? Math.round((received / gross) * 100) : 0;
+  document.getElementById('fin-adimplence').innerText = `${adim}%`;
+}
+
+async function togglePaymentStatus(sessionId) {
+  const session = await getById('sessoes', sessionId);
+  if (session) {
+    const current = session.pagamentoStatus || session.paymentStatus || 'pendente';
+    session.pagamentoStatus = current === 'pago' ? 'pendente' : 'pago';
+    await saveItem('sessoes', session);
+    renderFinancialReport();
+    loadDashboardData();
+  }
+}
+
+/* RELATÓRIO DE FALTAS LOGIC */
+function initFaultsView() {
+  loadFaultReportPatientsSelect();
+  toggleFaultPeriodInputs();
+}
+
+async function loadFaultReportPatientsSelect() {
+  const select = document.getElementById('fault-report-patient');
+  select.innerHTML = '<option value="">Todos os Pacientes</option>';
+  const patients = await getAll('pacientes');
+  patients.forEach(p => {
+    select.innerHTML += `<option value="${p.id}">${p.nome}</option>`;
+  });
+}
+
+function toggleFaultPeriodInputs() {
+  const type = document.getElementById('fault-report-period-type').value;
+  document.getElementById('group-fault-week').style.display = type === 'semana' ? 'block' : 'none';
+  document.getElementById('group-fault-month').style.display = type === 'mes' ? 'block' : 'none';
+  document.getElementById('group-fault-year').style.display = type === 'ano' ? 'block' : 'none';
+}
+
+async function renderFaultsReport() {
+  const type = document.getElementById('fault-report-period-type').value;
+  const selectedPatientId = document.getElementById('fault-report-patient').value;
+
+  const sessions = await getAll('sessoes');
+  const patients = await getAll('pacientes');
+
+  let faults = sessions.filter(s => s.status === 'falta');
+
+  if (selectedPatientId) {
+    faults = faults.filter(s => Number(s.pacienteld || s.patientId) === Number(selectedPatientId));
+  }
+
+  if (type === 'mes') {
+    const mVal = document.getElementById('fault-report-month').value;
+    if (mVal) faults = faults.filter(s => (s.dataHora || s.datetime || '').startsWith(mVal));
+  } else if (type === 'ano') {
+    const yVal = document.getElementById('fault-report-year').value;
+    if (yVal) faults = faults.filter(s => (s.dataHora || s.datetime || '').startsWith(yVal));
+  }
+
+  const tbody = document.getElementById('faults-report-table-body');
+  tbody.innerHTML = '';
+
+  if (faults.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Nenhuma falta encontrada para o filtro.</td></tr>';
+    return;
+  }
+
+  faults.forEach(f => {
+    const dt = new Date(f.dataHora || f.datetime);
+    const dateStr = dt.toLocaleDateString('pt-BR');
+    const timeStr = dt.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    const patient = patients.find(p => Number(p.id) === Number(f.pacienteld || f.patientId));
+    const pName = patient ? patient.nome : 'Desconhecido';
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${dateStr}</td>
+      <td>${timeStr}</td>
+      <td>${pName}</td>
+      <td>${f.modalidade || '-'}</td>
+      <td>${f.motivoFalta || 'Não informado'}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+async function downloadFaultsReportPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF('p', 'mm', 'a4');
+  let currentY = 20;
+
+  doc.setFont("helvetica", "bold"); doc.setFontSize(15); doc.setTextColor(136, 14, 79);
+  doc.text("RELATÓRIO GERAL DE FALTAS", 105, currentY, { align: "center" }); currentY += 8;
+
+  doc.setFont("helvetica", "normal"); doc.setFontSize(9.5); doc.setTextColor(55, 71, 79);
+  doc.text("Daniele Sousa Santos - CRP 22/07398", 105, currentY, { align: "center" }); currentY += 10;
+
+  doc.setDrawColor(216, 27, 96); doc.line(20, currentY, 190, currentY); currentY += 10;
+
+  const rows = document.querySelectorAll('#faults-report-table-body tr');
+  rows.forEach(r => {
+    const cols = r.querySelectorAll('td');
+    if (cols.length >= 5) {
+      if (currentY > 260) { doc.addPage(); currentY = 20; }
+      doc.setFont("helvetica", "bold");
+      doc.text(`${cols[0].innerText} ${cols[1].innerText} - Paciente: ${cols[2].innerText}`, 20, currentY);
+      currentY += 5;
+      doc.setFont("helvetica", "normal");
+      doc.text(`Motivo: ${cols[4].innerText}`, 20, currentY);
+      currentY += 8;
+    }
+  });
+
+  doc.line(70, currentY + 10, 140, currentY + 10);
+  doc.setFont("helvetica", "bold"); doc.text("Daniele Sousa Santos", 105, currentY + 15, { align: "center" });
+  doc.setFont("helvetica", "normal"); doc.text("CRP 22/07398", 105, currentY + 19, { align: "center" });
+
+  doc.save("Relatorio_de_Faltas.pdf");
 }
 </script>
 </body>
